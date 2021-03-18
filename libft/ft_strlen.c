@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 16:28:13 by mrosette          #+#    #+#             */
-/*   Updated: 2020/10/31 16:35:52 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/02/25 02:59:45 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ size_t		ft_strlen(const char *str)
 {
 	size_t i;
 
+	if (!str)
+		return (0);
 	i = 0;
 	while (str[i] != '\0')
 	{
