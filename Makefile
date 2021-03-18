@@ -6,7 +6,7 @@
 #    By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/24 15:14:17 by mrosette          #+#    #+#              #
-#    Updated: 2021/03/05 01:43:40 by mrosette         ###   ########.fr        #
+#    Updated: 2021/03/18 16:28:58 by mrosette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ SRCS = 	cub_parser.c \
 		path_utils.c \
 		map_utils.c \
 		map_errors.c \
-		trace.c
+		trace.c \
+		main_loop.c
 
 MLXFLAG = -lmlx -framework OpenGL -framework AppKit
 
