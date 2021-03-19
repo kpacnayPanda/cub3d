@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:44:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/17 14:12:46 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/19 16:14:45 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,14 +150,15 @@ int		main()
 	printf("posX = %f\n", sign.posX);
 	printf("posY = %f\n", sign.posY);
 	int ii = 0;
-	while (ii < 15)
+	while (ii < sign.mapheight)
 	{
 		printf("%s\n", sign.map_arr[ii]);
 		ii++;
 	}
 	printf("error: %d\n", error);
 
-	if (trace(&sign) == 2)
-		return (0);
+	// if (trace(&sign) == 2)
+	// 	return (0);
+	loop_main(&sign);
 	return (0);
 }

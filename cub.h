@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:36:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/18 17:58:57 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/19 16:44:27 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,26 @@
 # define CUB_H
 
 # include "libft.h"
-# include "mlx.h"
+# include "minilibx_mms_20200219/mlx.h"
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include "engine.h"
 # include <stdio.h> //del
+
+# define WHITE 0x00FFFFFF
+# define BLACK 0x00000000
+# define RED 0x00FF0000
+# define GREEN 0x0000FF00
+# define BLUE 0x000000FF
+# define MAGENTA 0x00FF00FF
+# define YELLOW 0x00FFFF00
+# define CYAN 0x0000FFFF
+
+# define W 13
+# define SS 1
+# define A 0
+# define D 2
 
 typedef struct s_stuct
 {
@@ -42,9 +56,8 @@ typedef struct s_stuct
     double posY;
 
     char **map_arr;
-}               map_cub;
+	//--------------//
 
-typedef struct  s_data {
 	void	*mlx;
 	void	*win;
 	double dirX;
@@ -56,8 +69,24 @@ typedef struct  s_data {
 	double CameraX;
 	double rayDirX;
 	double rayDirY;
-	map_cub sign;
-}               t_data;
+	double rotspeed;
+}               map_cub;
+
+// typedef struct  s_data {
+// 	void	*mlx;
+// 	void	*win;
+// 	double dirX;
+// 	double dirY;
+// 	double planeX;
+// 	double planeY;
+// 	double time;
+// 	double oldtime;
+// 	double CameraX;
+// 	double rayDirX;
+// 	double rayDirY;
+// 	double rotspeed;
+// 	map_cub sign;
+// }               t_data;
 
 typedef struct  s_img {
     void        *img;
@@ -82,6 +111,6 @@ void	check_map(char *str, map_cub *sign);
 int		map_error_check(map_cub *sign);
 int     trace(map_cub *sign);
 void	find_pos(map_cub *sign);
-int		loop_main(t_data *vars);
+int		loop_main(map_cub *sign);
 
 #endif

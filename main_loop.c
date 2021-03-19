@@ -6,14 +6,14 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 16:27:17 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/18 18:07:31 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/19 17:36:09 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 #include <math.h>
 
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
+void	my_mlx_pixel_put(t_img *img, int x, int y, unsigned int color)
 {
 	char	*dst;
 
@@ -22,7 +22,7 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 }
 
 
-void	ft_line(int i, int drawStart, int drawEnd, unsigned int color, t_data *vars, t_img *img)
+void	ft_line(int i, int drawStart, int drawEnd, unsigned int color, map_cub *vars, t_img *img)
 {
 	while (drawStart < drawEnd)
 	{
@@ -31,52 +31,126 @@ void	ft_line(int i, int drawStart, int drawEnd, unsigned int color, t_data *vars
 	}
 }
 
-int		loop_main(t_data *vars)
+int				key_press(int keycode, map_cub *sign)
+{
+
+	if (keycode == 53) //Quit the program when ESC key pressed
+		exit(0);
+	// if (keycode == 0)
+	// {
+	// 	//printf("i am here and my dirX %f\n", sign->dirX);
+	// 	if (sign->map_arr[(int)sign->posX][(int)(sign->posY + sign->dirX * 0.25)] == 0)
+	// 		sign->posY += sign->dirX * 0.25;
+	// 	if (sign->map_arr[(int)(sign->posX - sign->dirY * 0.25)][(int)sign->dirY] == 0)
+	// 	 	sign->dirX = 0;
+	// }
+	if (keycode == W)
+	{
+		//printf("i am here");
+		if(sign->map_arr[(int)(sign->posX + sign->dirX * 0.25)][(int)(sign->posY)] == '0')
+				sign->posX += sign->dirX * 0.25;
+      	if(sign->map_arr[(int)(sign->posX)][(int)(sign->posY + sign->dirY * 0.25)] == '0')
+		  		sign->posY += sign->dirY * 0.25;
+	}
+	if (keycode == SS)
+	{
+		//printf("i am here");
+		if(sign->map_arr[(int)(sign->posX - sign->dirX * 0.25)][(int)(sign->posY)] == '0')
+				sign->posX -= sign->dirX * 0.25;
+      	if(sign->map_arr[(int)(sign->posX)][(int)(sign->posY - sign->dirY * 0.25)] == '0')
+		  		sign->posY -= sign->dirY * 0.25;
+	}
+	if (keycode == A)
+	{
+		//printf("i am here");
+		if(sign->map_arr[(int)(sign->posX - sign->dirY * 0.25)][(int)(sign->dirY)] == '0')
+				sign->posX -= sign->dirX * 0.25;
+      	if(sign->map_arr[(int)(sign->posX)][(int)(sign->posY + sign->dirX * 0.25)] == '0')
+		  		sign->posY += sign->dirY * 0.25;
+	}
+	if (keycode == D)
+	{
+		//printf("i am here");
+		if(sign->map_arr[(int)sign->dirX][(int)(sign->posY + sign->dirX * 0.25)] == '0')
+				sign->posY -= sign->dirX * 0.25;
+      	if(sign->map_arr[(int)(sign->dirY)][(int)(sign->posX + sign->dirY * 0.25)] == '0')
+		  		sign->posX += sign->dirY * 0.25;
+	}
+	if (keycode == 123)
+	{
+		double olddir = sign->dirX;
+		double oldplanex = sign->planeX;
+
+		sign->dirX = sign->dirX * cos(sign->rotspeed) - sign->dirY * sin(sign->rotspeed);
+		sign->dirY = olddir * sin(sign->rotspeed) + sign->dirY * cos(sign->rotspeed);
+
+		sign->planeX = sign->planeX * cos(sign->rotspeed) - sign->planeY * sin(sign->rotspeed);
+		sign->planeY = oldplanex * sin(sign->rotspeed) + sign->planeY * cos(sign->rotspeed);
+	}
+	if (keycode == 124)
+	{
+		double olddir = sign->dirX;
+		double oldplanex = sign->planeX;
+
+		sign->dirX = sign->dirX * cos(-sign->rotspeed) - sign->dirY * sin(-sign->rotspeed);
+		sign->dirY = olddir * sin(-sign->rotspeed) + sign->dirY * cos(-sign->rotspeed);
+
+		sign->planeX = sign->planeX * cos(-sign->rotspeed) - sign->planeY * sin(-sign->rotspeed);
+		sign->planeY = oldplanex * sin(-sign->rotspeed) + sign->planeY * cos(-sign->rotspeed);
+	}
+	return (0);
+}
+
+int		ft_ray(map_cub *sign)
 {
 	t_img img;
 	int i = 0;
 
-	img.img = mlx_new_image(vars->mlx, vars->sign.width, vars->sign.height);
+	//printf("\n\n %f \n%f \n\n",sign->posX, sign->posY);
+	//printf("my dirx is a %f\n", sign->dirX);
+	//printf("\n %f \n %f \n", sign->posX, sign->posY);
+
+	img.img = mlx_new_image(sign->mlx, sign->width, sign->height);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 
-	while (i < vars->sign.width)
+	while (i < sign->width)
 	{
-		vars->CameraX = (2 * i) / (double)vars->sign.width - 1;
-		vars->rayDirX = vars->dirX + (vars->planeX * vars->CameraX);
-		vars->rayDirY = vars->dirY + (vars->planeY * vars->CameraX);
+		sign->CameraX = 2 * i / (double)sign->width - 1;
+		sign->rayDirX = sign->dirX + sign->planeX * sign->CameraX;
+		sign->rayDirY = sign->dirY + sign->planeY * sign->CameraX;
 
-	int mapX = (int)vars->sign.posX;
-	int mapY = (int)vars->sign.posY;
+	int mapX = (int)sign->posX;
+	int mapY = (int)sign->posY;
 	double sideDistX;
 	double sideDistY;
 
-	double deltaDistX = (vars->rayDirY == 0) ? 0 : ((vars->rayDirX == 0) ? 1 : fabs(1 / vars->rayDirX));
-	double deltaDistY = (vars->rayDirX == 0) ? 0 : ((vars->rayDirY == 0) ? 1 : fabs(1 / vars->rayDirY));
+	double deltaDistX = fabs(1 / sign->rayDirX);
+	double deltaDistY = fabs(1 / sign->rayDirY);
 	double perpWallDist;
 	int stepX;
 	int stepY;
 	int hit = 0;
 	int side = -1;
 
-	if (vars->rayDirX < 0)
+	if (sign->rayDirX < 0)
 	  {
         stepX = -1;
-        sideDistX = (vars->sign.posX - mapX) * deltaDistX;
+        sideDistX = (sign->posX- mapX) * deltaDistX;
       }
       else
       {
         stepX = 1;
-        sideDistX = (mapX + 1.0 - vars->sign.posX) * deltaDistX;
+        sideDistX = (mapX + 1.0 - sign->posX) * deltaDistX;
       }
-      if (vars->rayDirY < 0)
+      if (sign->rayDirY < 0)
       {
         stepY = -1;
-        sideDistY = (vars->sign.posY - mapY) * deltaDistY;
+        sideDistY = (sign->posY - mapY) * deltaDistY;
       }
       else
       {
         stepY = 1;
-        sideDistY = (mapY + 1.0 - vars->sign.posY) * deltaDistY;
+        sideDistY = (mapY + 1.0 - sign->posY) * deltaDistY;
       }
 
 	while (hit == 0)
@@ -95,43 +169,65 @@ int		loop_main(t_data *vars)
           side = 1;
         }
         //Check if ray has hit a wall
-        if (vars->sign.map_arr[mapX][mapY] > 0) hit = 1;
-
-		//if (hit > 0)
-			//printf("I hit the wall: %d %d", mapX, mapY);
-			//exit(0);
+        if (sign->map_arr[mapX][mapY] > '0')
+			hit = 1;
       }
 
 	  if (side == 0)
-	  	perpWallDist = (mapX - vars->sign.posX + (1 - stepX) / 2) / vars->rayDirX;
+	  	perpWallDist = (mapX - sign->posX + (1 - stepX) / 2) / sign->rayDirX;
       else
-	  	perpWallDist = (mapY - vars->sign.posY + (1 - stepY) / 2) / vars->rayDirY;
+	  	perpWallDist = (mapY - sign->posY + (1 - stepY) / 2) / sign->rayDirY;
 
 	  //Calculate height of line to draw on screen
-      int lineHeight = (int)(vars->sign.height / perpWallDist);
+      int lineHeight = (int)(sign->height / perpWallDist);
 
       //calculate lowest and highest pixel to fill in current stripe
-      int drawStart = -lineHeight / 2 + vars->sign.height / 2;
-      if(drawStart < 0)drawStart = 0;
-      int drawEnd = lineHeight / 2 + vars->sign.height / 2;
-      if(drawEnd >= vars->sign.height)drawEnd = vars->sign.height - 1;
+      int drawStart = -lineHeight / 2 + sign->height / 2;
+      if(drawStart < 0)
+	  	drawStart = 0;
+      int drawEnd = lineHeight / 2 + sign->height / 2;
+      if(drawEnd >= sign->height)
+	  		drawEnd = sign->height - 1;
 
-	 unsigned int color = 0x0;
-			if (vars->sign.posY > mapY && side)
-				color = 0x00FF0000;
-			else if (vars->sign.posY < mapY && side)
-				color = 0x000000FF;
-			else if (vars->sign.posX > mapX && !side)
-				color = 0x00FFFFFF;
-			else if (vars->sign.posX < mapX && !side)
-				color = 0x0000FF00;
+	 unsigned int color;
+			if (sign->posY > mapY && side)
+				color = RED;
+			else if (sign->posY < mapY && side)
+				color = BLUE;
+			else if (sign->posX > mapX && !side)
+				color = WHITE;
+			else if (sign->posX < mapX && !side)
+				color = GREEN;
 
-	  //if (side == 1) {color = color / 2;}
-
-		ft_line(i, drawStart, drawEnd, color, vars, &img);
+		ft_line(i, drawStart, drawEnd, color, sign, &img);
 		i++;
-	}
 
-	mlx_put_image_to_window(vars->mlx, vars->win, img.img, 0, 0);
+	}
+	mlx_put_image_to_window(sign->mlx, sign->win, img.img, 0, 0);
+}
+
+void	init_st(map_cub *sign)
+{
+	sign->dirX = -1;
+	sign->dirY = 0;
+	sign->planeX = 0;
+	sign->planeY = 0.66;
+	sign->oldtime = 0;
+	sign->time = 0;
+	sign->CameraX = 0;
+	sign->rayDirX = 0;
+	sign->rayDirY = 0;
+	sign->rotspeed = 0.05;
+}
+
+int		loop_main(map_cub *sign)
+{
+	init_st(sign);
+
+	sign->mlx = mlx_init();
+    sign->win = mlx_new_window(sign->mlx, sign->width, sign->height, "CUB3D");
+	mlx_hook(sign->win, 2, 0, &key_press, sign);
+	mlx_loop_hook(sign->mlx, ft_ray, sign);
+	mlx_loop(sign->mlx);
 	return (0);
 }
