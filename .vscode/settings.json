@@ -3,6 +3,7 @@
 		"cub.h": "c",
 		"unistd.h": "c",
 		"mlx.h": "c",
-		"fcntl.h": "c"
+		"fcntl.h": "c",
+		"locale": "c"
 	}
 }

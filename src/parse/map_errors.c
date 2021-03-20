@@ -6,11 +6,11 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 14:14:23 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/19 11:05:30 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/20 17:07:20 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "includes/cub.h"
 
 int		check_util(map_cub *sign, int i, int j)
 {

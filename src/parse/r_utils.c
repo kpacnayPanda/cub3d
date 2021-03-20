@@ -6,11 +6,11 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 17:08:53 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/02 17:46:03 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/20 17:07:29 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "includes/cub.h"
 
 void	take_width_r(char *str, int flag, map_cub *sign)
 {

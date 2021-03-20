@@ -6,11 +6,11 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:21:06 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/16 17:38:19 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/20 17:07:26 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "includes/cub.h"
 
 char	check_for_id(char *line)
 {

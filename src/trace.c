@@ -6,40 +6,13 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 00:34:45 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/19 12:01:56 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/20 17:07:24 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "includes/cub.h"
 #include <math.h>
 
-// int				key_press(int keycode, t_data *vars)
-// {
-
-// 	if (keycode == 53) //Quit the program when ESC key pressed
-// 		exit(0);
-// 	return (0);
-// }
-
-
-
-// void	init_st(t_data *vars)
-// {
-// 	vars->dirX = -1;
-// 	vars->dirY = 0;
-// 	vars->planeX = 0;
-// 	vars->planeY = 0.66;
-// 	vars->oldtime = 0;
-// 	vars->time = 0;
-// 	vars->CameraX = 0;
-// 	vars->rayDirX = 0;
-// 	vars->rayDirY = 0;
-// 	//vars->sign.width = sign->width;
-// 	//vars->sign.height = sign->height;
-// 	//vars->sign.posX = sign->posX;
-// 	//vars->sign.posY = sign->posY;
-// 	//vars->sign.map_arr = sign->map_arr;
-// }
 
 int			trace(map_cub *sign)
 {

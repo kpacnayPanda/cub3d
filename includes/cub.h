@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:36:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/19 16:44:27 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/20 16:37:28 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 # define MAGENTA 0x00FF00FF
 # define YELLOW 0x00FFFF00
 # define CYAN 0x0000FFFF
+
+# define BUFFER_SIZE 128
 
 # define W 13
 # define SS 1
@@ -58,6 +60,22 @@ typedef struct s_stuct
     char **map_arr;
 	//--------------//
 
+	// void	*mlx;
+	// void	*win;
+	// double dirX;
+	// double dirY;
+	// double planeX;
+	// double planeY;
+	// double time;
+	// double oldtime;
+	// double CameraX;
+	// double rayDirX;
+	// double rayDirY;
+	// double rotspeed;
+	// double movespeed;
+}               map_cub;
+
+typedef struct  s_ray {
 	void	*mlx;
 	void	*win;
 	double dirX;
@@ -70,23 +88,9 @@ typedef struct s_stuct
 	double rayDirX;
 	double rayDirY;
 	double rotspeed;
-}               map_cub;
-
-// typedef struct  s_data {
-// 	void	*mlx;
-// 	void	*win;
-// 	double dirX;
-// 	double dirY;
-// 	double planeX;
-// 	double planeY;
-// 	double time;
-// 	double oldtime;
-// 	double CameraX;
-// 	double rayDirX;
-// 	double rayDirY;
-// 	double rotspeed;
-// 	map_cub sign;
-// }               t_data;
+	double movespeed;
+	map_cub sign;
+}               t_ray;
 
 typedef struct  s_img {
     void        *img;
@@ -95,8 +99,6 @@ typedef struct  s_img {
     int         line_length;
     int         endian;
 }               t_img;
-
-# define BUFFER_SIZE 128
 
 
 int		cub_parser(int fd, char **line);

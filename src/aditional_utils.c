@@ -6,11 +6,11 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:39:58 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/02 18:00:12 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/20 17:07:30 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "includes/cub.h"
 
 char	*f_strjoin(char *str, char *str2)
 {

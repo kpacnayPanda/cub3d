@@ -6,11 +6,11 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:13:11 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/16 17:38:32 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/20 17:07:19 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "includes/cub.h"
 
 int		find_borders(char *str, map_cub *sign)
 {
