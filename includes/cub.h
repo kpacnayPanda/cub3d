@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:36:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/20 16:37:28 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/20 19:15:08 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <string.h>
 # include "engine.h"
 # include <stdio.h> //del
 
@@ -36,6 +37,9 @@
 # define SS 1
 # define A 0
 # define D 2
+# define LEFT 123
+# define RIGHT 124
+# define EXIT 53
 
 typedef struct s_stuct
 {
@@ -75,6 +79,16 @@ typedef struct s_stuct
 	// double movespeed;
 }               map_cub;
 
+typedef struct  s_key {
+	char		w;
+	char		s;
+	char		a;
+	char		d;
+	char		left;
+	char		right;
+	char		exit;
+}				t_key;
+
 typedef struct  s_ray {
 	void	*mlx;
 	void	*win;
@@ -90,6 +104,7 @@ typedef struct  s_ray {
 	double rotspeed;
 	double movespeed;
 	map_cub sign;
+	t_key	key;
 }               t_ray;
 
 typedef struct  s_img {

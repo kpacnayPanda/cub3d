@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 16:27:17 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/20 17:11:03 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/20 19:47:43 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, unsigned int color)
 	*(unsigned int*)dst = color;
 }
 
-
 void	ft_line(int i, int drawStart, int drawEnd, unsigned int color, t_img *img)
 {
 	while (drawStart < drawEnd)
@@ -31,43 +30,43 @@ void	ft_line(int i, int drawStart, int drawEnd, unsigned int color, t_img *img)
 	}
 }
 
-int				key_press(int keycode, t_ray *ray)
+void		move_player(t_ray *ray)
 {
 	map_cub *sign;
 
 	sign = &(ray->sign);
-	if (keycode == 53) //Quit the program when ESC key pressed
+	if (ray->key.exit) //Quit the program when ESC key pressed
 		exit(0);
 
-	if (keycode == W)
+	if (ray->key.w)
 	{
 		if(sign->map_arr[(int)(sign->posX + ray->dirX * 0.25)][(int)(sign->posY)] == '0')
 				sign->posX += ray->dirX * 0.25;
       	if(sign->map_arr[(int)(sign->posX)][(int)(sign->posY + ray->dirY * 0.25)] == '0')
 		  		sign->posY += ray->dirY * 0.25;
 	}
-	if (keycode == SS)
+	if (ray->key.s)
 	{
 		if(sign->map_arr[(int)(sign->posX - ray->dirX * 0.25)][(int)(sign->posY)] == '0')
 				sign->posX -= ray->dirX * 0.25;
       	if(sign->map_arr[(int)(sign->posX)][(int)(sign->posY - ray->dirY * 0.25)] == '0')
 		  		sign->posY -= ray->dirY * 0.25;
 	}
-	if (keycode == A)
+	if (ray->key.a)
 	{
 		if(sign->map_arr[(int)sign->posX][(int)(sign->posY + ray->dirX * ray->movespeed)] == '0')
 			sign->posY += ray->dirX * ray->movespeed;
 		if(sign->map_arr[(int)(sign->posX - ray->dirY * ray->movespeed)][(int)sign->posY] == '0')
 			sign->posX -= ray->dirY * ray->movespeed;
 	}
-	if (keycode == D)
+	if (ray->key.d)
 	{
 		if(sign->map_arr[(int)sign->posX][(int)(sign->posY - ray->dirX * ray->movespeed)] == '0')
 			sign->posY -= ray->dirX * ray->movespeed;
 		if(sign->map_arr[(int)(sign->posX + ray->dirY * ray->movespeed)][(int)sign->posY] == '0')
 			sign->posX += ray->dirY * ray->movespeed;
 	}
-	if (keycode == 123)
+	if (ray->key.left)
 	{
 		double olddir = ray->dirX;
 		double oldplanex = ray->planeX;
@@ -78,7 +77,7 @@ int				key_press(int keycode, t_ray *ray)
 		ray->planeX = ray->planeX * cos(ray->rotspeed) - ray->planeY * sin(ray->rotspeed);
 		ray->planeY = oldplanex * sin(ray->rotspeed) + ray->planeY * cos(ray->rotspeed);
 	}
-	if (keycode == 124)
+	if (ray->key.right)
 	{
 		double olddir = ray->dirX;
 		double oldplanex = ray->planeX;
@@ -89,18 +88,69 @@ int				key_press(int keycode, t_ray *ray)
 		ray->planeX = ray->planeX * cos(-ray->rotspeed) - ray->planeY * sin(-ray->rotspeed);
 		ray->planeY = oldplanex * sin(-ray->rotspeed) + ray->planeY * cos(-ray->rotspeed);
 	}
-	return (0);
 }
 
+//----------------
+
+unsigned int      get_color(t_img *data, int x, int y)
+{
+    char    *dst;
+
+    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+    return (*(unsigned int*)dst);
+}
+
+
+
+void	ft_line2(int i, int drawStart, int drawEnd, t_img *img, int texX, t_img *wood, int lineHeight, int side, map_cub sign)
+{
+  unsigned int color;
+  double texPos;
+  double step = 1.5 * sign.height / lineHeight;
+  double drawing;
+  drawing = (double)drawStart;
+  texPos = (drawStart - sign.height / 2 + lineHeight / 2) * step;
+	while (drawStart < drawEnd)
+	{
+		color = get_color(wood, texX, texPos/17);
+    if (side == 1) color = (color >> 1) & 8355711;
+    my_mlx_pixel_put(img, i, drawStart, color);
+    texPos += step ;
+		drawStart ++;
+	}
+}
+
+
+//--------------
 int		ft_ray(t_ray *ray)
 {
 	t_img img;
 	map_cub sign;
 	int i = 0;
 
+	int img_width;
+	int img_height;
+
 	sign = ray->sign;
+	move_player(ray);
 
+	//text load
 
+	t_img tex1;
+	t_img tex2;
+	t_img tex3;
+	t_img tex4;
+
+	tex1.img = mlx_xpm_file_to_image(ray->mlx, "pics/stone.xpm", &img_width, &img_height);
+	tex1.addr = mlx_get_data_addr(tex1.img, &tex1.bits_per_pixel, &tex1.line_length, &tex1.endian);
+	tex2.img = mlx_xpm_file_to_image(ray->mlx, "pics/brick.xpm", &img_width, &img_height);
+	tex2.addr = mlx_get_data_addr(tex2.img, &tex2.bits_per_pixel, &tex2.line_length, &tex2.endian);
+	tex3.img = mlx_xpm_file_to_image(ray->mlx, "pics/criper.xpm", &img_width, &img_height);
+	tex3.addr = mlx_get_data_addr(tex3.img, &tex3.bits_per_pixel, &tex3.line_length, &tex3.endian);
+	tex4.img = mlx_xpm_file_to_image(ray->mlx, "pics/rikardo.xpm", &img_width, &img_height);
+	tex4.addr = mlx_get_data_addr(tex4.img, &tex4.bits_per_pixel, &tex4.line_length, &tex4.endian);
+
+	//
 
 	img.img = mlx_new_image(ray->mlx, sign.width, sign.height);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
@@ -181,24 +231,55 @@ int		ft_ray(t_ray *ray)
       if(drawEnd >= sign.height)
 	  		drawEnd = sign.height - 1;
 
-	 unsigned int color;
-			if (sign.posY > mapY && side)
-				color = RED;
-			else if (sign.posY < mapY && side)
-				color = BLUE;
-			else if (sign.posX > mapX && !side)
-				color = WHITE;
-			else if (sign.posX < mapX && !side)
-				color = GREEN;
+	// 	//tex rend
 
-		ft_line(i, drawStart, drawEnd, color, &img);
+		double wallX;
+            if (side == 0) wallX = sign.posY + perpWallDist * ray->rayDirY;
+      else           wallX = sign.posX + perpWallDist * ray->rayDirX;
+      wallX -= floor((wallX));
+      int texWidth = 64;
+      int texX = (int)(wallX * (double)(texWidth));
+      if(side == 0 && ray->rayDirX > 0)
+	  		texX = texWidth - texX - 1;
+      if(side == 1 && ray->rayDirY < 0)
+	  		texX = texWidth - texX - 1;
+
+		//
+
+		unsigned int color;
+			if (sign.posY > mapY && side)
+			{
+				//color = RED;
+				//ft_line(i, drawStart, drawEnd, color, &img);
+				ft_line2(i, drawStart, drawEnd, &img, texX, &tex1, lineHeight, side, sign);
+			}
+			else if (sign.posY < mapY && side)
+			{
+				//color = BLUE;
+				ft_line2(i, drawStart, drawEnd, &img, texX, &tex2, lineHeight, side, sign);
+				//ft_line(i, drawStart, drawEnd, color, &img);
+			}
+			else if (sign.posX > mapX && !side)
+			{
+				//color = WHITE;
+				ft_line2(i, drawStart, drawEnd, &img, texX, &tex3, lineHeight, side, sign);
+				//ft_line(i, drawStart, drawEnd, color, &img);
+			}
+			else if (sign.posX < mapX && !side)
+			{
+				//color = GREEN;
+				ft_line2(i, drawStart, drawEnd, &img, texX, &tex4, lineHeight, side, sign);
+				//ft_line(i, drawStart, drawEnd, color, &img);
+			}
+
+		//ft_line(i, drawStart, drawEnd, color, &img);
 		i++;
 
 	}
 	mlx_put_image_to_window(ray->mlx, ray->win, img.img, 0, 0);
 }
 
-void	init_st(t_ray *ray, map_cub *sign)
+void	init_st(t_ray *ray, map_cub *sign, t_key key)
 {
 	ray->dirX = -1;
 	ray->dirY = 0;
@@ -209,20 +290,67 @@ void	init_st(t_ray *ray, map_cub *sign)
 	ray->CameraX = 0;
 	ray->rayDirX = 0;
 	ray->rayDirY = 0;
-	ray->rotspeed = 0.05;
-	ray->movespeed = 0.015;
+	ray->rotspeed = 0.02;
+	ray->movespeed = 0.003;
 	ray->sign = *sign;
+	ray->key = key;
+}
+
+int		finish(t_ray *ray)
+{
+	mlx_destroy_window(ray->mlx, ray->win);
+	exit (0);
+	return (0);
+}
+
+int key_pressed(int keycode, t_ray *ray)
+{
+	if (keycode == W)
+		ray->key.w = 1;
+	if (keycode == SS)
+		ray->key.s = 1;
+	if (keycode == A)
+		ray->key.a = 1;
+	if (keycode == D)
+		ray->key.d = 1;
+	if (keycode == LEFT)
+		ray->key.left = 1;
+	if (keycode == RIGHT)
+		ray->key.right = 1;
+	if (keycode == EXIT)
+		ray->key.exit = 1;
+}
+
+int key_unpressed(int keycode, t_ray *ray)
+{
+	if (keycode == W)
+		ray->key.w = 0;
+	if (keycode == SS)
+		ray->key.s = 0;
+	if (keycode == A)
+		ray->key.a = 0;
+	if (keycode == D)
+		ray->key.d = 0;
+	if (keycode == LEFT)
+		ray->key.left = 0;
+	if (keycode == RIGHT)
+		ray->key.right = 0;
 }
 
 int		loop_main(map_cub *sign)
 {
 	t_ray ray;
-	init_st(&ray, sign);
+	t_key key;
+	init_st(&ray, sign, key);
 
 	ray.mlx = mlx_init();
     ray.win = mlx_new_window(ray.mlx, sign->width, sign->height, "CUB3D");
-	mlx_hook(ray.win, 2, 0, &key_press, &ray);
+	mlx_hook(ray.win, 2, 0, &key_pressed, &ray);
+	mlx_hook(ray.win, 17, 0, finish, &ray);
+	mlx_hook(ray.win, 3, 0, &key_unpressed, &ray);
 	mlx_loop_hook(ray.mlx, ft_ray, &ray);
+
+
 	mlx_loop(ray.mlx);
 	return (0);
 }
