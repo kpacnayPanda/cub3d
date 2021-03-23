@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:39:58 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/20 17:07:30 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/23 15:40:16 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,24 @@ int		check(char *str)
 		i++;
 	}
 	return (0);
+}
+
+int			ft_len(int n)
+{
+	int count;
+
+	count = 0;
+	if (n == 0)
+		return (1);
+	if (n < 0)
+	{
+		count++;
+		n *= -1;
+	}
+	while (n > 0)
+	{
+		n /= 10;
+		count += 1;
+	}
+	return (count);
 }

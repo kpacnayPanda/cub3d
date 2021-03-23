@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:36:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/20 19:15:08 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/23 17:00:38 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,10 @@ typedef struct s_stuct
     int flag;
     double posX;
     double posY;
+	unsigned int f;
+	unsigned int c;
 
     char **map_arr;
-	//--------------//
-
-	// void	*mlx;
-	// void	*win;
-	// double dirX;
-	// double dirY;
-	// double planeX;
-	// double planeY;
-	// double time;
-	// double oldtime;
-	// double CameraX;
-	// double rayDirX;
-	// double rayDirY;
-	// double rotspeed;
-	// double movespeed;
 }               map_cub;
 
 typedef struct  s_key {
@@ -129,5 +116,12 @@ int		map_error_check(map_cub *sign);
 int     trace(map_cub *sign);
 void	find_pos(map_cub *sign);
 int		loop_main(map_cub *sign);
+int			ft_len(int n);
+void	parse_color_f(t_ray ray, char *line, map_cub *sign);
+void	parse_color_c(t_ray ray, char *line, map_cub *sign);
+int        cub_parser(int fd, char **line);
+void	ft_set_args(map_cub *sign);
+void	ft_set_keys(t_key *key);
+void	init_st(t_ray *ray, map_cub *sign, t_key *key);
 
 #endif

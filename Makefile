@@ -6,7 +6,7 @@
 #    By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/24 15:14:17 by mrosette          #+#    #+#              #
-#    Updated: 2021/03/23 14:13:28 by mrosette         ###   ########.fr        #
+#    Updated: 2021/03/23 16:12:12 by mrosette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,9 @@ SRCS = 	src/id_parsing.c \
 		$(MAIN) \
 		src/main_loop.c \
 		src/aditional_utils.c \
+		src/parse_color.c \
+		src/gnl.c \
+		src/inits.c \
 
 #**********************MAIN************************#
 MAIN_DIR = src/

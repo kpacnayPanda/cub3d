@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 16:27:17 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/23 14:26:16 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/23 17:00:34 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,37 +298,18 @@ int		ft_ray(t_ray *ray)
 		zz = 0;
 		while (zz < drawStart)
 		{
-			my_mlx_pixel_put(&img, i, zz, RED);
+			my_mlx_pixel_put(&img, i, zz, sign.c);
 			zz++;
 		}
 		zz = drawEnd;
 		while (zz < sign.height)
 		{
-			my_mlx_pixel_put(&img, i, zz, BLUE);
+			my_mlx_pixel_put(&img, i, zz, sign.f);
 			zz++;
 		}
-
 		i++;
-
 	}
 	mlx_put_image_to_window(ray->mlx, ray->win, img.img, 0, 0);
-}
-
-void	init_st(t_ray *ray, map_cub *sign, t_key key)
-{
-	ray->dirX = -1;
-	ray->dirY = 0;
-	ray->planeX = 0;
-	ray->planeY = 0.66;
-	ray->oldtime = 0;
-	ray->time = 0;
-	ray->CameraX = 0;
-	ray->rayDirX = 0;
-	ray->rayDirY = 0;
-	ray->rotspeed = 0.02;
-	ray->movespeed = 0.1;
-	ray->sign = *sign;
-	ray->key = key;
 }
 
 int		finish(t_ray *ray)
@@ -376,16 +357,16 @@ int		loop_main(map_cub *sign)
 {
 	t_ray ray;
 	t_key key;
-	init_st(&ray, sign, key);
 
 	ray.mlx = mlx_init();
+	parse_color_f(ray, sign->F, sign);
+	parse_color_c(ray, sign->C, sign);
+	init_st(&ray, sign, &key);
     ray.win = mlx_new_window(ray.mlx, sign->width, sign->height, "CUB3D");
 	mlx_hook(ray.win, 2, 0, &key_pressed, &ray);
 	mlx_hook(ray.win, 17, 0, finish, &ray);
 	mlx_hook(ray.win, 3, 0, &key_unpressed, &ray);
 	mlx_loop_hook(ray.mlx, ft_ray, &ray);
-
-
 	mlx_loop(ray.mlx);
 	return (0);
 }
