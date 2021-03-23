@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 16:27:17 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/20 19:47:43 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/23 14:26:16 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,17 @@ void		move_player(t_ray *ray)
 
 	if (ray->key.w)
 	{
-		if(sign->map_arr[(int)(sign->posX + ray->dirX * 0.25)][(int)(sign->posY)] == '0')
-				sign->posX += ray->dirX * 0.25;
-      	if(sign->map_arr[(int)(sign->posX)][(int)(sign->posY + ray->dirY * 0.25)] == '0')
-		  		sign->posY += ray->dirY * 0.25;
+		if(sign->map_arr[(int)(sign->posX + ray->dirX * ray->movespeed)][(int)(sign->posY)] == '0')
+				sign->posX += ray->dirX * ray->movespeed;
+      	if(sign->map_arr[(int)(sign->posX)][(int)(sign->posY + ray->dirY * ray->movespeed)] == '0')
+		  		sign->posY += ray->dirY * ray->movespeed;
 	}
 	if (ray->key.s)
 	{
-		if(sign->map_arr[(int)(sign->posX - ray->dirX * 0.25)][(int)(sign->posY)] == '0')
-				sign->posX -= ray->dirX * 0.25;
-      	if(sign->map_arr[(int)(sign->posX)][(int)(sign->posY - ray->dirY * 0.25)] == '0')
-		  		sign->posY -= ray->dirY * 0.25;
+		if(sign->map_arr[(int)(sign->posX - ray->dirX * ray->movespeed)][(int)(sign->posY)] == '0')
+				sign->posX -= ray->dirX * ray->movespeed;
+      	if(sign->map_arr[(int)(sign->posX)][(int)(sign->posY - ray->dirY * ray->movespeed)] == '0')
+		  		sign->posY -= ray->dirY * ray->movespeed;
 	}
 	if (ray->key.a)
 	{
@@ -100,7 +100,23 @@ unsigned int      get_color(t_img *data, int x, int y)
     return (*(unsigned int*)dst);
 }
 
-
+void	ft_line3(int i, int drawStart, int drawEnd, t_img *img, int texX, t_img *wood, int lineHeight, int side, map_cub sign)
+{
+  unsigned int color;
+  double texPos;
+  double step = 1.5 * sign.height / lineHeight;
+  double drawing;
+  drawing = (double)drawStart;
+  texPos = (drawStart - sign.height / 2 + lineHeight / 2) * step;
+	while (drawStart < drawEnd)
+	{
+		color = get_color(wood, texX, texPos/17);
+    if( color != 0x000000)
+      my_mlx_pixel_put(img, i, drawStart, color);
+    texPos += step ;
+		drawStart ++;
+	}
+}
 
 void	ft_line2(int i, int drawStart, int drawEnd, t_img *img, int texX, t_img *wood, int lineHeight, int side, map_cub sign)
 {
@@ -140,6 +156,7 @@ int		ft_ray(t_ray *ray)
 	t_img tex2;
 	t_img tex3;
 	t_img tex4;
+	t_img sp;
 
 	tex1.img = mlx_xpm_file_to_image(ray->mlx, "pics/stone.xpm", &img_width, &img_height);
 	tex1.addr = mlx_get_data_addr(tex1.img, &tex1.bits_per_pixel, &tex1.line_length, &tex1.endian);
@@ -149,6 +166,8 @@ int		ft_ray(t_ray *ray)
 	tex3.addr = mlx_get_data_addr(tex3.img, &tex3.bits_per_pixel, &tex3.line_length, &tex3.endian);
 	tex4.img = mlx_xpm_file_to_image(ray->mlx, "pics/rikardo.xpm", &img_width, &img_height);
 	tex4.addr = mlx_get_data_addr(tex4.img, &tex4.bits_per_pixel, &tex4.line_length, &tex4.endian);
+	sp.img = mlx_xpm_file_to_image(ray->mlx, "pics/barrel.xpm", &img_width, &img_height);
+	sp.addr = mlx_get_data_addr(sp.img, &sp.bits_per_pixel, &sp.line_length, &sp.endian);
 
 	//
 
@@ -247,32 +266,48 @@ int		ft_ray(t_ray *ray)
 		//
 
 		unsigned int color;
-			if (sign.posY > mapY && side)
+		if (sign.map_arr[mapX][mapY] == '2')
+		{
+
+		}
+			else if (sign.posY > mapY && side && sign.map_arr[mapX][mapY] != '2')
 			{
-				//color = RED;
-				//ft_line(i, drawStart, drawEnd, color, &img);
 				ft_line2(i, drawStart, drawEnd, &img, texX, &tex1, lineHeight, side, sign);
 			}
-			else if (sign.posY < mapY && side)
+			else if (sign.posY < mapY && side && sign.map_arr[mapX][mapY] != '2')
 			{
 				//color = BLUE;
 				ft_line2(i, drawStart, drawEnd, &img, texX, &tex2, lineHeight, side, sign);
 				//ft_line(i, drawStart, drawEnd, color, &img);
 			}
-			else if (sign.posX > mapX && !side)
+			else if (sign.posX > mapX && !side && sign.map_arr[mapX][mapY] != '2')
 			{
 				//color = WHITE;
 				ft_line2(i, drawStart, drawEnd, &img, texX, &tex3, lineHeight, side, sign);
 				//ft_line(i, drawStart, drawEnd, color, &img);
 			}
-			else if (sign.posX < mapX && !side)
+			else if (sign.posX < mapX && !side && sign.map_arr[mapX][mapY] != '2')
 			{
 				//color = GREEN;
 				ft_line2(i, drawStart, drawEnd, &img, texX, &tex4, lineHeight, side, sign);
 				//ft_line(i, drawStart, drawEnd, color, &img);
 			}
 
-		//ft_line(i, drawStart, drawEnd, color, &img);
+		int zz;
+
+		zz = 0;
+		while (zz < drawStart)
+		{
+			my_mlx_pixel_put(&img, i, zz, RED);
+			zz++;
+		}
+		zz = drawEnd;
+		while (zz < sign.height)
+		{
+			my_mlx_pixel_put(&img, i, zz, BLUE);
+			zz++;
+		}
+
 		i++;
 
 	}
@@ -291,7 +326,7 @@ void	init_st(t_ray *ray, map_cub *sign, t_key key)
 	ray->rayDirX = 0;
 	ray->rayDirY = 0;
 	ray->rotspeed = 0.02;
-	ray->movespeed = 0.003;
+	ray->movespeed = 0.1;
 	ray->sign = *sign;
 	ray->key = key;
 }

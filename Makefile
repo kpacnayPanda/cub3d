@@ -6,7 +6,7 @@
 #    By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/24 15:14:17 by mrosette          #+#    #+#              #
-#    Updated: 2021/03/20 17:06:04 by mrosette         ###   ########.fr        #
+#    Updated: 2021/03/23 14:13:28 by mrosette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,15 +16,14 @@ LIBFT = libft/libft.a
 
 MLX = libmlx.dylib
 
-SRCS = 	src/parse/id_parsing.c \
-		src/parse/map_utils.c \
-		src/parse/map_errors.c \
-		src/parse/path_utils.c \
-		src/parse/r_utils.c \
+SRCS = 	src/id_parsing.c \
+		src/map_utils.c \
+		src/map_errors.c \
+		src/path_utils.c \
+		src/r_utils.c \
 		$(MAIN) \
-		src/raycasting/main_loop.c \
+		src/main_loop.c \
 		src/aditional_utils.c \
-		src/trace.c \
 
 #**********************MAIN************************#
 MAIN_DIR = src/
