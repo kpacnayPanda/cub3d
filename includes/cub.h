@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:36:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/23 17:00:38 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/24 17:40:32 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,16 @@ typedef struct s_stuct
     char **map_arr;
 }               map_cub;
 
+typedef struct  s_img {
+    void        *img;
+    char        *addr;
+    int         bits_per_pixel;
+    int         line_length;
+    int         endian;
+	int			width;
+	int			height;
+}               t_img;
+
 typedef struct  s_key {
 	char		w;
 	char		s;
@@ -75,6 +85,15 @@ typedef struct  s_key {
 	char		right;
 	char		exit;
 }				t_key;
+
+typedef struct s_tex
+{
+	t_img no;
+	t_img so;
+	t_img ea;
+	t_img we;
+	t_img sp;
+}				t_tex;
 
 typedef struct  s_ray {
 	void	*mlx;
@@ -92,15 +111,8 @@ typedef struct  s_ray {
 	double movespeed;
 	map_cub sign;
 	t_key	key;
+	t_tex tex;
 }               t_ray;
-
-typedef struct  s_img {
-    void        *img;
-    char        *addr;
-    int         bits_per_pixel;
-    int         line_length;
-    int         endian;
-}               t_img;
 
 
 int		cub_parser(int fd, char **line);
@@ -115,13 +127,15 @@ void	check_map(char *str, map_cub *sign);
 int		map_error_check(map_cub *sign);
 int     trace(map_cub *sign);
 void	find_pos(map_cub *sign);
-int		loop_main(map_cub *sign);
+int		loop_main(t_ray *ray);
 int			ft_len(int n);
-void	parse_color_f(t_ray ray, char *line, map_cub *sign);
-void	parse_color_c(t_ray ray, char *line, map_cub *sign);
+void	parse_color_f(t_ray *ray, char *line, map_cub *sign);
+void	parse_color_c(t_ray *ray, char *line, map_cub *sign);
 int        cub_parser(int fd, char **line);
 void	ft_set_args(map_cub *sign);
 void	ft_set_keys(t_key *key);
 void	init_st(t_ray *ray, map_cub *sign, t_key *key);
+
+void	init_textures(t_ray *ray);
 
 #endif

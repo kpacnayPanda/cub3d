@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 16:11:08 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/23 16:59:22 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/24 17:28:44 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ void	ft_set_keys(t_key *key)
 
 void	init_st(t_ray *ray, map_cub *sign, t_key *key)
 {
-	ray->mlx = mlx_init();
-	ray->win = 0;
+	ray->win = NULL;
 	ray->dirX = -1;
 	ray->dirY = 0;
 	ray->planeX = 0;

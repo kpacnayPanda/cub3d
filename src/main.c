@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:44:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/23 17:00:22 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/24 17:29:16 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ int		parse_file(map_cub *sign, char *str)
 int		cub_start(char *str)
 {
 	map_cub sign;
-	t_key keys;
+	t_key key;
+	t_ray ray;
 
 
 	ft_set_args(&sign);
-	ft_set_keys(&keys);
+	ft_set_keys(&key);
 
 	if (parse_file(&sign, str))
 	{
@@ -70,7 +71,8 @@ int		cub_start(char *str)
 			printf("%s\n", sign.map_arr[ii]);
 			ii++;
 		}
-		loop_main(&sign);
+		init_st(&ray, &sign, &key);
+		loop_main(&ray);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 16:27:17 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/23 17:00:34 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/24 18:46:52 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,30 +144,8 @@ int		ft_ray(t_ray *ray)
 	map_cub sign;
 	int i = 0;
 
-	int img_width;
-	int img_height;
-
 	sign = ray->sign;
 	move_player(ray);
-
-	//text load
-
-	t_img tex1;
-	t_img tex2;
-	t_img tex3;
-	t_img tex4;
-	t_img sp;
-
-	tex1.img = mlx_xpm_file_to_image(ray->mlx, "pics/stone.xpm", &img_width, &img_height);
-	tex1.addr = mlx_get_data_addr(tex1.img, &tex1.bits_per_pixel, &tex1.line_length, &tex1.endian);
-	tex2.img = mlx_xpm_file_to_image(ray->mlx, "pics/brick.xpm", &img_width, &img_height);
-	tex2.addr = mlx_get_data_addr(tex2.img, &tex2.bits_per_pixel, &tex2.line_length, &tex2.endian);
-	tex3.img = mlx_xpm_file_to_image(ray->mlx, "pics/criper.xpm", &img_width, &img_height);
-	tex3.addr = mlx_get_data_addr(tex3.img, &tex3.bits_per_pixel, &tex3.line_length, &tex3.endian);
-	tex4.img = mlx_xpm_file_to_image(ray->mlx, "pics/rikardo.xpm", &img_width, &img_height);
-	tex4.addr = mlx_get_data_addr(tex4.img, &tex4.bits_per_pixel, &tex4.line_length, &tex4.endian);
-	sp.img = mlx_xpm_file_to_image(ray->mlx, "pics/barrel.xpm", &img_width, &img_height);
-	sp.addr = mlx_get_data_addr(sp.img, &sp.bits_per_pixel, &sp.line_length, &sp.endian);
 
 	//
 
@@ -272,24 +250,24 @@ int		ft_ray(t_ray *ray)
 		}
 			else if (sign.posY > mapY && side && sign.map_arr[mapX][mapY] != '2')
 			{
-				ft_line2(i, drawStart, drawEnd, &img, texX, &tex1, lineHeight, side, sign);
+				ft_line2(i, drawStart, drawEnd, &img, texX, &ray->tex.no, lineHeight, side, sign);
 			}
 			else if (sign.posY < mapY && side && sign.map_arr[mapX][mapY] != '2')
 			{
 				//color = BLUE;
-				ft_line2(i, drawStart, drawEnd, &img, texX, &tex2, lineHeight, side, sign);
+				ft_line2(i, drawStart, drawEnd, &img, texX, &ray->tex.so, lineHeight, side, sign);
 				//ft_line(i, drawStart, drawEnd, color, &img);
 			}
 			else if (sign.posX > mapX && !side && sign.map_arr[mapX][mapY] != '2')
 			{
 				//color = WHITE;
-				ft_line2(i, drawStart, drawEnd, &img, texX, &tex3, lineHeight, side, sign);
+				ft_line2(i, drawStart, drawEnd, &img, texX, &ray->tex.we, lineHeight, side, sign);
 				//ft_line(i, drawStart, drawEnd, color, &img);
 			}
 			else if (sign.posX < mapX && !side && sign.map_arr[mapX][mapY] != '2')
 			{
 				//color = GREEN;
-				ft_line2(i, drawStart, drawEnd, &img, texX, &tex4, lineHeight, side, sign);
+				ft_line2(i, drawStart, drawEnd, &img, texX, &ray->tex.ea, lineHeight, side, sign);
 				//ft_line(i, drawStart, drawEnd, color, &img);
 			}
 
@@ -334,7 +312,7 @@ int key_pressed(int keycode, t_ray *ray)
 	if (keycode == RIGHT)
 		ray->key.right = 1;
 	if (keycode == EXIT)
-		ray->key.exit = 1;
+		finish(ray);
 }
 
 int key_unpressed(int keycode, t_ray *ray)
@@ -353,20 +331,18 @@ int key_unpressed(int keycode, t_ray *ray)
 		ray->key.right = 0;
 }
 
-int		loop_main(map_cub *sign)
+int		loop_main(t_ray *ray)
 {
-	t_ray ray;
-	t_key key;
 
-	ray.mlx = mlx_init();
-	parse_color_f(ray, sign->F, sign);
-	parse_color_c(ray, sign->C, sign);
-	init_st(&ray, sign, &key);
-    ray.win = mlx_new_window(ray.mlx, sign->width, sign->height, "CUB3D");
-	mlx_hook(ray.win, 2, 0, &key_pressed, &ray);
-	mlx_hook(ray.win, 17, 0, finish, &ray);
-	mlx_hook(ray.win, 3, 0, &key_unpressed, &ray);
-	mlx_loop_hook(ray.mlx, ft_ray, &ray);
-	mlx_loop(ray.mlx);
+	ray->mlx = mlx_init();
+	ray->win = mlx_new_window(ray->mlx, ray->sign.width, ray->sign.height, "CUB3D");
+	parse_color_f(ray, ray->sign.F, &ray->sign);
+	parse_color_c(ray, ray->sign.C, &ray->sign);
+	init_textures(ray);
+	mlx_hook(ray->win, 2, 0, &key_pressed, ray);
+	mlx_hook(ray->win, 17, 0, finish, ray);
+	mlx_hook(ray->win, 3, 0, &key_unpressed, ray);
+	mlx_loop_hook(ray->mlx, ft_ray, ray);
+	mlx_loop(ray->mlx);
 	return (0);
 }
