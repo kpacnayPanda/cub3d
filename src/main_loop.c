@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 16:27:17 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/24 18:46:52 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/25 18:58:57 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	ft_line3(int i, int drawStart, int drawEnd, t_img *img, int texX, t_img *wo
 {
   unsigned int color;
   double texPos;
-  double step = 1.5 * sign.height / lineHeight;
+  double step = 1.0 * sign.height / lineHeight;
   double drawing;
   drawing = (double)drawStart;
   texPos = (drawStart - sign.height / 2 + lineHeight / 2) * step;
@@ -112,8 +112,8 @@ void	ft_line3(int i, int drawStart, int drawEnd, t_img *img, int texX, t_img *wo
 	{
 		color = get_color(wood, texX, texPos/17);
     if( color != 0x000000)
-      my_mlx_pixel_put(img, i, drawStart, color);
-    texPos += step ;
+      	my_mlx_pixel_put(img, i, drawStart, color);
+    	texPos += step ;
 		drawStart ++;
 	}
 }
