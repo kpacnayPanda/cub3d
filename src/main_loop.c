@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 16:27:17 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/25 18:58:57 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/03/26 17:20:49 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,17 +122,22 @@ void	ft_line2(int i, int drawStart, int drawEnd, t_img *img, int texX, t_img *wo
 {
   unsigned int color;
   double texPos;
-  double step = 1.5 * sign.height / lineHeight;
+  double step = 1.0 * 64 / lineHeight;
   double drawing;
   drawing = (double)drawStart;
+  int tex_y;
   texPos = (drawStart - sign.height / 2 + lineHeight / 2) * step;
 	while (drawStart < drawEnd)
 	{
-		color = get_color(wood, texX, texPos/17);
-    if (side == 1) color = (color >> 1) & 8355711;
-    my_mlx_pixel_put(img, i, drawStart, color);
-    texPos += step ;
+		if (texPos > ((double)64 - 1))
+			texPos = 64 - 1;
+		if (texPos < 0)
+			texPos = 0;
+			tex_y = (int)texPos;
+		color = ((int*)wood->addr)[64 * tex_y + texX];
+    	my_mlx_pixel_put(img, i, drawStart, color);
 		drawStart ++;
+		texPos += step ;
 	}
 }
 
@@ -165,7 +170,7 @@ int		ft_ray(t_ray *ray)
 
 	double deltaDistX = fabs(1 / ray->rayDirX);
 	double deltaDistY = fabs(1 / ray->rayDirY);
-	double perpWallDist;
+	double perpWallDist = 0;
 	int stepX;
 	int stepY;
 	int hit = 0;
@@ -208,7 +213,7 @@ int		ft_ray(t_ray *ray)
           side = 1;
         }
         //Check if ray has hit a wall
-        if (sign.map_arr[mapX][mapY] > '0')
+        if (sign.map_arr[mapX][mapY] == '1')
 			hit = 1;
       }
 
@@ -217,23 +222,28 @@ int		ft_ray(t_ray *ray)
       else
 	  	perpWallDist = (mapY - sign.posY + (1 - stepY) / 2) / ray->rayDirY;
 
+		if (perpWallDist == 0)
+			perpWallDist += 0.05;
+
 	  //Calculate height of line to draw on screen
       int lineHeight = (int)(sign.height / perpWallDist);
 
       //calculate lowest and highest pixel to fill in current stripe
-      int drawStart = -lineHeight / 2 + sign.height / 2;
+      int drawStart = (sign.height - lineHeight) / 2;
       if(drawStart < 0)
 	  	drawStart = 0;
-      int drawEnd = lineHeight / 2 + sign.height / 2;
+      int drawEnd = (lineHeight + sign.height) / 2;
       if(drawEnd >= sign.height)
 	  		drawEnd = sign.height - 1;
 
 	// 	//tex rend
 
 		double wallX;
-            if (side == 0) wallX = sign.posY + perpWallDist * ray->rayDirY;
-      else           wallX = sign.posX + perpWallDist * ray->rayDirX;
-      wallX -= floor((wallX));
+            if (side == 0)
+			wallX = sign.posY + perpWallDist * ray->rayDirY;
+      		else
+			  wallX = sign.posX + perpWallDist * ray->rayDirX;
+      wallX = wallX - floor((wallX));
       int texWidth = 64;
       int texX = (int)(wallX * (double)(texWidth));
       if(side == 0 && ray->rayDirX > 0)
@@ -243,7 +253,6 @@ int		ft_ray(t_ray *ray)
 
 		//
 
-		unsigned int color;
 		if (sign.map_arr[mapX][mapY] == '2')
 		{
 
@@ -254,21 +263,15 @@ int		ft_ray(t_ray *ray)
 			}
 			else if (sign.posY < mapY && side && sign.map_arr[mapX][mapY] != '2')
 			{
-				//color = BLUE;
 				ft_line2(i, drawStart, drawEnd, &img, texX, &ray->tex.so, lineHeight, side, sign);
-				//ft_line(i, drawStart, drawEnd, color, &img);
 			}
 			else if (sign.posX > mapX && !side && sign.map_arr[mapX][mapY] != '2')
 			{
-				//color = WHITE;
 				ft_line2(i, drawStart, drawEnd, &img, texX, &ray->tex.we, lineHeight, side, sign);
-				//ft_line(i, drawStart, drawEnd, color, &img);
 			}
 			else if (sign.posX < mapX && !side && sign.map_arr[mapX][mapY] != '2')
 			{
-				//color = GREEN;
 				ft_line2(i, drawStart, drawEnd, &img, texX, &ray->tex.ea, lineHeight, side, sign);
-				//ft_line(i, drawStart, drawEnd, color, &img);
 			}
 
 		int zz;
@@ -288,6 +291,7 @@ int		ft_ray(t_ray *ray)
 		i++;
 	}
 	mlx_put_image_to_window(ray->mlx, ray->win, img.img, 0, 0);
+	return (0);
 }
 
 int		finish(t_ray *ray)
@@ -297,7 +301,7 @@ int		finish(t_ray *ray)
 	return (0);
 }
 
-int key_pressed(int keycode, t_ray *ray)
+int		key_pressed(int keycode, t_ray *ray)
 {
 	if (keycode == W)
 		ray->key.w = 1;
@@ -313,9 +317,10 @@ int key_pressed(int keycode, t_ray *ray)
 		ray->key.right = 1;
 	if (keycode == EXIT)
 		finish(ray);
+	return (0);
 }
 
-int key_unpressed(int keycode, t_ray *ray)
+int		key_unpressed(int keycode, t_ray *ray)
 {
 	if (keycode == W)
 		ray->key.w = 0;
@@ -329,6 +334,7 @@ int key_unpressed(int keycode, t_ray *ray)
 		ray->key.left = 0;
 	if (keycode == RIGHT)
 		ray->key.right = 0;
+	return (0);
 }
 
 int		loop_main(t_ray *ray)
