@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 16:27:17 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/01 20:26:19 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:02:29 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,7 @@ int		ft_ray(t_ray *ray)
 	move_player(ray);
 	ray->i = 0;
 	img.img = mlx_new_image(ray->mlx, sign.width, sign.height);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel,
-								&img.line_length, &img.endian);
+	img.addr = mlx_get_data_addr(img.img, &img.bpr, &img.l_len, &img.endian);
 	while (ray->i < sign.width)
 	{
 		ray->CameraX = 2 * ray->i / (double)sign.width - 1;

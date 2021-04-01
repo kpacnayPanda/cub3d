@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 16:11:08 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/01 18:52:01 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:28:52 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,3 @@ void	ft_set_trace(t_trace *trace)
 {
 	trace->perpWallDist = 0;
 }
-

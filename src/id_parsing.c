@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:21:06 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/20 17:07:26 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:00:29 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 char	check_for_id(char *line)
 {
-	char id;
-	int i;
+	char	id;
+	int		i;
 
 	i = 0;
-
 	while (!ft_isalpha(line[i]) && line[i] != '\0')
 		i++;
-
 	id = '0';
 	if (line[i] == 'S' && line[i + 1] == 'O')
 		id = 'S';
@@ -46,8 +44,8 @@ void	find_configs(char *line, map_cub *sign)
 		take_r_specs(line, sign);
 	if (id == 'F' || id == 'C')
 		take_color(line, sign, id);
-	if (id == 'S' || id == 'N' || id == 'W' || id =='E' || id == 'T')
-		find_path(line, sign, id);
+	if (id == 'S' || id == 'N' || id == 'W' || id == 'E' || id == 'T')
+		find_path(line, sign, id, 0);
 	if (id == '0')
 		check_map(line, sign);
 }

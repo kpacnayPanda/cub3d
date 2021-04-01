@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 15:24:25 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/24 17:31:31 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:55:07 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,3 @@ void	parse_color_c(t_ray *ray, char *line, map_cub *sign)
 	// 	ft_error(10);
 	sign->c = mlx_get_color_value(ray->mlx, r * 65536 + g * 256 + b);
 }
-

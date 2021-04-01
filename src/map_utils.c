@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:13:11 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/20 17:07:19 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:49:29 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int		find_borders(char *str, map_cub *sign)
 {
-	int i;
-	int len;
-	int flag;
+	int	i;
+	int	len;
+	int	flag;
 
 	i = 0;
 	len = ft_strlen(str);
@@ -45,9 +45,9 @@ void	set_map_arr(map_cub *sign)
 
 void	check_map(char *str, map_cub *sign)
 {
-	int i;
-	int j;
-	char **tmp;
+	int		i;
+	int		j;
+	char	**tmp;
 
 	i = 0;
 	j = 0;
@@ -72,26 +72,23 @@ void	check_map(char *str, map_cub *sign)
 	//free(sign->map_arr);
 	i = 0;
 	j = 0;
-
 	if (!find_borders(str, sign))
-		return;
+		return ;
 	set_map_arr(sign);
 	while (i < sign->iheight)
 	{
- 		sign->map_arr[i] = (char*)malloc(sizeof(char) * (sign->mapwidth + 1));
+		sign->map_arr[i] = (char*)malloc(sizeof(char) * (sign->mapwidth + 1));
 		while (j < sign->mapwidth && tmp[i][j] != '\0')
 		{
 			sign->map_arr[i][j] = tmp[i][j];
 			j++;
 		}
-
 		sign->map_arr[i][j] = '\0';
 		i++;
 		j = 0;
 	}
-
-	 i = 0;
-	 j = 0;
+	i = 0;
+	j = 0;
 	sign->map_arr[sign->iheight] = (char*)malloc(sizeof(char) * (sign->mapwidth + 1));
 	while (j < sign->mapwidth && str[i] != '\0')
 	{

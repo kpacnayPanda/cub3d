@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 16:10:06 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/23 16:10:23 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:30:05 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*after_newline(char *remainder)
 	return (newstr);
 }
 
-int        cub_parser(int fd, char **line)
+int		cub_parser(int fd, char **line)
 {
 	char		*buf;
 	int			byte_read;

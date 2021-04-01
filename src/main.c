@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:44:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/01 18:24:37 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:54:35 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int		parse_file(map_cub *sign, char *str)
 {
-	int fd;
-	int i;
-	char *line;
+	int		fd;
+	int		i;
+	char	*line;
 
 	i = 0;
 	line = NULL;
@@ -25,11 +25,11 @@ int		parse_file(map_cub *sign, char *str)
 	{
 		printf("i = %d %s\n", i, line);
 		find_configs(line, sign);
-		free (line);
+		free(line);
 	}
 	printf("i = %d %s\n\n", i, line);
 	find_configs(line, sign);
-	free (line);
+	free(line);
 	sign->map_arr[sign->iheight] = NULL;
 	if (!map_error_check(sign))
 		return (0);
@@ -38,21 +38,18 @@ int		parse_file(map_cub *sign, char *str)
 
 int		cub_start(char *str)
 {
-	map_cub sign;
-	t_key key;
-	t_ray ray;
-	t_trace trace;
+	map_cub	sign;
+	t_key	key;
+	t_ray	ray;
+	t_trace	trace;
 
 	ft_set_args(&sign);
 	ft_set_keys(&key);
 	ft_set_trace(&trace);
-
 	if (parse_file(&sign, str))
 	{
 		find_pos(&sign);
-
-	//check contoral
-
+		//check contoral
 		printf("width: %d\n", sign.width);
 		printf("height: %d\n", sign.height);
 		printf("north: %s\n", sign.NO);
@@ -78,12 +75,10 @@ int		cub_start(char *str)
 	return (0);
 }
 
-int main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
 	if (argc == 2 && ft_strnstr(argv[1], ".cub", ft_strlen(argv[1])))
 		cub_start(argv[1]);
 	else if (argc == 3)
 		printf("MAKE MAP PIC");
-	//else
-	//	print_error(0);
 }

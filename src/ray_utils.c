@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 17:53:25 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/01 20:02:50 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:02:58 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,42 +16,19 @@ unsigned int	get_color(t_img *data, int x, int y)
 {
 	char	*dst;
 
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	dst = data->addr + (y * data->l_len + x * (data->bpr / 8));
 	return (*(unsigned int*)dst);
 }
 
-void	my_mlx_pixel_put(t_img *img, int x, int y, unsigned int color)
+void			my_mlx_pixel_put(t_img *img, int x, int y, unsigned int color)
 {
 	char	*dst;
 
-	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+	dst = img->addr + (y * img->l_len + x * (img->bpr / 8));
 	*(unsigned int*)dst = color;
 }
 
-// void	ft_line2(int i, t_trace *trace, t_img *img, int texX, t_img *wood, int lineHeight, int side, map_cub sign)
-// {
-// 	unsigned int color;
-// 	double texPos;
-// 	double step = 1.0 * 64 / lineHeight;
-// 	double drawing;
-// 	drawing = (double)trace->drawStart;
-// 	int tex_y;
-// 	texPos = (trace->drawStart - sign.height / 2 + lineHeight / 2) * step;
-// 	while (trace->drawStart < trace->drawEnd)
-// 	{
-// 		if (texPos > ((double)64 - 1))
-// 			texPos = 64 - 1;
-// 		if (texPos < 0)
-// 			texPos = 0;
-// 			tex_y = (int)texPos;
-// 		color = ((int*)wood->addr)[64 * tex_y + texX];
-// 		my_mlx_pixel_put(img, i, trace->drawStart, color);
-// 		trace->drawStart ++;
-// 		texPos += step ;
-// 	}
-// }
-
-int		key_pressed(int keycode, t_ray *ray)
+int				key_pressed(int keycode, t_ray *ray)
 {
 	if (keycode == W)
 		ray->key.w = 1;
@@ -70,7 +47,7 @@ int		key_pressed(int keycode, t_ray *ray)
 	return (0);
 }
 
-int		key_unpressed(int keycode, t_ray *ray)
+int				key_unpressed(int keycode, t_ray *ray)
 {
 	if (keycode == W)
 		ray->key.w = 0;

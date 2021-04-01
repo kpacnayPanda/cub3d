@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:36:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/01 20:23:24 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:02:27 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ typedef struct	s_stuct
 typedef struct	s_img {
 	void	*img;
 	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
+	int		bpr;
+	int		l_len;
 	int		endian;
 	int		width;
 	int		height;
@@ -145,7 +145,7 @@ void	find_configs(char *line, map_cub *sign);
 void	take_r_specs(char *str, map_cub *sign);
 char	*f_strjoin(char *str, char *str2);
 char	*copy(char *str, int start, int end);
-void	find_path(char *str, map_cub *sign, char id);
+void	find_path(char *str, map_cub *sign, char id, int i);
 void	take_color(char *str, map_cub *sign, char id);
 int		check(char *str);
 void	check_map(char *str, map_cub *sign);
@@ -172,7 +172,6 @@ void	move_right(t_ray *ray);
 
 unsigned int	get_color(t_img *data, int x, int y);
 void			my_mlx_pixel_put(t_img *img, int x, int y, unsigned int color);
-//void	ft_line2(int i, int drawStart, int drawEnd, t_img *img, int texX, t_img *wood, int lineHeight, int side, map_cub sign);
 void	draw_walls(t_trace *trace, map_cub sign, t_ray *ray, t_img *img);
 void	draw_f_c(t_trace *trace, t_img img, map_cub sign, t_ray *ray);
 

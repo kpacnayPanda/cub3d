@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 17:08:53 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/20 17:07:29 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:57:07 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,18 @@
 
 void	take_width_r(char *str, int flag, map_cub *sign)
 {
-	int i;
-	int widthlen;
-	char *tmp;
-	int num;
+	int		i;
+	int		widthlen;
+	char	*tmp;
+	int		num;
 
 	widthlen = 0;
 	i = 0;
-	num = 0;
-
 	while (str[i] != ' ' && str[i] != '\0')
 	{
 		widthlen++;
 		i++;
 	}
-
 	tmp = (char*)malloc((widthlen + 1) * sizeof(char));
 	i = 0;
 	while (str[i] != ' ' && str[i] != '\0')
@@ -44,15 +41,13 @@ void	take_width_r(char *str, int flag, map_cub *sign)
 		sign->height = num;
 }
 
-
 void	take_r_specs(char *str, map_cub *sign)
 {
-	int i;
-	int flag;
+	int	i;
+	int	flag;
 
 	i = 0;
 	flag = 0;
-
 	while (str[i] != '\0')
 	{
 		if (ft_isdigit(str[i]) && (flag == 0))

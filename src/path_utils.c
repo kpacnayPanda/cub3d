@@ -6,22 +6,19 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 15:56:45 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/20 17:07:27 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:00:32 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-void	find_path(char *str, map_cub *sign, char id)
+void	find_path(char *str, map_cub *sign, char id, int i)
 {
-	int i;
 	int flag;
 	int start;
 	int end;
 
-	i = 0;
 	flag = 1;
-
 	while (str[i] && flag == 1)
 	{
 		if (str[i] == '.')
@@ -53,7 +50,6 @@ void	take_color(char *str, map_cub *sign, char id)
 
 	i = 0;
 	flag = 1;
-
 	while (str[i] && flag == 1)
 	{
 		if (ft_isdigit(str[i]))

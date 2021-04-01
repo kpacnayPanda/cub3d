@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 14:14:23 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/20 17:07:20 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:46:32 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int		check_util(map_cub *sign, int i, int j)
 	if (i == 0 || j == sign->mapwidth - 1 || i == sign->mapheight - 1 ||
 		sign->mapwidth == 0)
 		return (0);
-
 	if (sign->map_arr[i + 1][j] == ' ' || sign->map_arr[i][j + 1] == ' ')
 		return (0);
 	if (sign->map_arr[i - 1][j] == ' ' || sign->map_arr[i][j - 1] == ' ')
@@ -32,7 +31,6 @@ int		map_error_check(map_cub *sign)
 
 	i = 0;
 	j = 0;
-
 	while (i < sign->mapheight)
 	{
 		while (j < sign->mapwidth && sign->map_arr[i][j] != '\0')
@@ -59,14 +57,14 @@ void	find_pos(map_cub *sign)
 	j = 0;
 	while (i < sign->mapheight)
 	{
-		while(j < sign->mapwidth)
+		while (j < sign->mapwidth)
 		{
-			if (sign->map_arr[i][j] == 'N'|| sign->map_arr[i][j] == 'S' ||
+			if (sign->map_arr[i][j] == 'N' || sign->map_arr[i][j] == 'S' ||
 			sign->map_arr[i][j] == 'W' || sign->map_arr[i][j] == 'E')
 			{
 				sign->posX = i;
 				sign->posY = j;
-				return;
+				return ;
 			}
 			j++;
 		}
