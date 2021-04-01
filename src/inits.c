@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 16:11:08 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/24 17:28:44 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 18:52:01 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_set_keys(t_key *key)
 	key->right = 0;
 }
 
-void	init_st(t_ray *ray, map_cub *sign, t_key *key)
+void	init_st(t_ray *ray, map_cub *sign, t_key *key, t_trace *trace)
 {
 	ray->win = NULL;
 	ray->dirX = -1;
@@ -58,4 +58,11 @@ void	init_st(t_ray *ray, map_cub *sign, t_key *key)
 	ray->movespeed = 0.1;
 	ray->sign = *sign;
 	ray->key = *key;
+	ray->trace = *trace;
 }
+
+void	ft_set_trace(t_trace *trace)
+{
+	trace->perpWallDist = 0;
+}
+

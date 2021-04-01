@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:39:58 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/23 15:40:16 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 16:54:00 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,11 @@ int			ft_len(int n)
 		count += 1;
 	}
 	return (count);
+}
+
+int		finish(t_ray *ray)
+{
+	mlx_destroy_window(ray->mlx, ray->win);
+	exit (0);
+	return (0);
 }

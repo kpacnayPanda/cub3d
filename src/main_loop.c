@@ -6,283 +6,149 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 16:27:17 by mrosette          #+#    #+#             */
-/*   Updated: 2021/03/26 17:20:49 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/01 19:24:28 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
-#include <math.h>
 
-void	my_mlx_pixel_put(t_img *img, int x, int y, unsigned int color)
+void	init_ray(t_trace *trace, t_ray *ray, map_cub sign)
 {
-	char	*dst;
-
-	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
-}
-
-void	ft_line(int i, int drawStart, int drawEnd, unsigned int color, t_img *img)
-{
-	while (drawStart < drawEnd)
+	trace->deltaDistX = fabs(1 / ray->rayDirX);
+	trace->deltaDistY = fabs(1 / ray->rayDirY);
+	trace->hit = 0;
+	trace->side = -1;
+	if (ray->rayDirX < 0)
 	{
-		my_mlx_pixel_put(img, i, drawStart, color);
-		drawStart++;
+		trace->stepX = -1;
+		trace->sideDistX = (sign.posX - trace->mapX) * trace->deltaDistX;
 	}
-}
-
-void		move_player(t_ray *ray)
-{
-	map_cub *sign;
-
-	sign = &(ray->sign);
-	if (ray->key.exit) //Quit the program when ESC key pressed
-		exit(0);
-
-	if (ray->key.w)
+	else
 	{
-		if(sign->map_arr[(int)(sign->posX + ray->dirX * ray->movespeed)][(int)(sign->posY)] == '0')
-				sign->posX += ray->dirX * ray->movespeed;
-      	if(sign->map_arr[(int)(sign->posX)][(int)(sign->posY + ray->dirY * ray->movespeed)] == '0')
-		  		sign->posY += ray->dirY * ray->movespeed;
+		trace->stepX = 1;
+		trace->sideDistX = (trace->mapX + 1.0 - sign.posX) * trace->deltaDistX;
 	}
-	if (ray->key.s)
+	if (ray->rayDirY < 0)
 	{
-		if(sign->map_arr[(int)(sign->posX - ray->dirX * ray->movespeed)][(int)(sign->posY)] == '0')
-				sign->posX -= ray->dirX * ray->movespeed;
-      	if(sign->map_arr[(int)(sign->posX)][(int)(sign->posY - ray->dirY * ray->movespeed)] == '0')
-		  		sign->posY -= ray->dirY * ray->movespeed;
+		trace->stepY = -1;
+		trace->sideDistY = (sign.posY - trace->mapY) * trace->deltaDistY;
 	}
-	if (ray->key.a)
+	else
 	{
-		if(sign->map_arr[(int)sign->posX][(int)(sign->posY + ray->dirX * ray->movespeed)] == '0')
-			sign->posY += ray->dirX * ray->movespeed;
-		if(sign->map_arr[(int)(sign->posX - ray->dirY * ray->movespeed)][(int)sign->posY] == '0')
-			sign->posX -= ray->dirY * ray->movespeed;
-	}
-	if (ray->key.d)
-	{
-		if(sign->map_arr[(int)sign->posX][(int)(sign->posY - ray->dirX * ray->movespeed)] == '0')
-			sign->posY -= ray->dirX * ray->movespeed;
-		if(sign->map_arr[(int)(sign->posX + ray->dirY * ray->movespeed)][(int)sign->posY] == '0')
-			sign->posX += ray->dirY * ray->movespeed;
-	}
-	if (ray->key.left)
-	{
-		double olddir = ray->dirX;
-		double oldplanex = ray->planeX;
-
-		ray->dirX = ray->dirX * cos(ray->rotspeed) - ray->dirY * sin(ray->rotspeed);
-		ray->dirY = olddir * sin(ray->rotspeed) + ray->dirY * cos(ray->rotspeed);
-
-		ray->planeX = ray->planeX * cos(ray->rotspeed) - ray->planeY * sin(ray->rotspeed);
-		ray->planeY = oldplanex * sin(ray->rotspeed) + ray->planeY * cos(ray->rotspeed);
-	}
-	if (ray->key.right)
-	{
-		double olddir = ray->dirX;
-		double oldplanex = ray->planeX;
-
-		ray->dirX = ray->dirX * cos(-ray->rotspeed) - ray->dirY * sin(-ray->rotspeed);
-		ray->dirY = olddir * sin(-ray->rotspeed) + ray->dirY * cos(-ray->rotspeed);
-
-		ray->planeX = ray->planeX * cos(-ray->rotspeed) - ray->planeY * sin(-ray->rotspeed);
-		ray->planeY = oldplanex * sin(-ray->rotspeed) + ray->planeY * cos(-ray->rotspeed);
+		trace->stepY = 1;
+		trace->sideDistY = (trace->mapY + 1.0 - sign.posY) * trace->deltaDistY;
 	}
 }
 
-//----------------
-
-unsigned int      get_color(t_img *data, int x, int y)
+void	ray_shoot(t_trace *trace, map_cub sign, t_ray *ray)
 {
-    char    *dst;
-
-    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-    return (*(unsigned int*)dst);
-}
-
-void	ft_line3(int i, int drawStart, int drawEnd, t_img *img, int texX, t_img *wood, int lineHeight, int side, map_cub sign)
-{
-  unsigned int color;
-  double texPos;
-  double step = 1.0 * sign.height / lineHeight;
-  double drawing;
-  drawing = (double)drawStart;
-  texPos = (drawStart - sign.height / 2 + lineHeight / 2) * step;
-	while (drawStart < drawEnd)
+	while (trace->hit == 0)
 	{
-		color = get_color(wood, texX, texPos/17);
-    if( color != 0x000000)
-      	my_mlx_pixel_put(img, i, drawStart, color);
-    	texPos += step ;
-		drawStart ++;
+		if (trace->sideDistX < trace->sideDistY)
+		{
+			trace->sideDistX += trace->deltaDistX;
+			trace->mapX += trace->stepX;
+			trace->side = 0;
+		}
+		else
+		{
+			trace->sideDistY += trace->deltaDistY;
+			trace->mapY += trace->stepY;
+			trace->side = 1;
+		}
+		if (sign.map_arr[trace->mapX][trace->mapY] == '1')
+			trace->hit = 1;
 	}
+	if (trace->side == 0)
+		trace->perpWallDist = (trace->mapX - sign.posX + (1 - trace->stepX) / 2)
+								/ ray->rayDirX;
+	else
+		trace->perpWallDist = (trace->mapY - sign.posY + (1 - trace->stepY) / 2)
+								/ ray->rayDirY;
+	if (trace->perpWallDist == 0)
+		trace->perpWallDist += 0.05;
 }
 
-void	ft_line2(int i, int drawStart, int drawEnd, t_img *img, int texX, t_img *wood, int lineHeight, int side, map_cub sign)
-{
-  unsigned int color;
-  double texPos;
-  double step = 1.0 * 64 / lineHeight;
-  double drawing;
-  drawing = (double)drawStart;
-  int tex_y;
-  texPos = (drawStart - sign.height / 2 + lineHeight / 2) * step;
-	while (drawStart < drawEnd)
-	{
-		if (texPos > ((double)64 - 1))
-			texPos = 64 - 1;
-		if (texPos < 0)
-			texPos = 0;
-			tex_y = (int)texPos;
-		color = ((int*)wood->addr)[64 * tex_y + texX];
-    	my_mlx_pixel_put(img, i, drawStart, color);
-		drawStart ++;
-		texPos += step ;
-	}
-}
-
-
-//--------------
 int		ft_ray(t_ray *ray)
 {
-	t_img img;
-	map_cub sign;
-	int i = 0;
+	t_img	img;
+	map_cub	sign;
+	t_trace	*trace;
+	int		i;
 
 	sign = ray->sign;
+	trace = &ray->trace;
 	move_player(ray);
-
-	//
-
+	i = 0;
 	img.img = mlx_new_image(ray->mlx, sign.width, sign.height);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-
 	while (i < sign.width)
 	{
 		ray->CameraX = 2 * i / (double)sign.width - 1;
 		ray->rayDirX = ray->dirX + ray->planeX * ray->CameraX;
 		ray->rayDirY = ray->dirY + ray->planeY * ray->CameraX;
+		trace->mapX = (int)sign.posX;
+		trace->mapY = (int)sign.posY;
+		init_ray(trace, ray, sign);
+		ray_shoot(trace, sign, ray);
 
-	int mapX = (int)sign.posX;
-	int mapY = (int)sign.posY;
-	double sideDistX;
-	double sideDistY;
+		//Calculate height of line to draw on screen
+		trace->lineHeight = (int)(sign.height / trace->perpWallDist);
 
-	double deltaDistX = fabs(1 / ray->rayDirX);
-	double deltaDistY = fabs(1 / ray->rayDirY);
-	double perpWallDist = 0;
-	int stepX;
-	int stepY;
-	int hit = 0;
-	int side = -1;
+		//calculate lowest and highest pixel to fill in current stripe
+		trace->drawStart = (sign.height - trace->lineHeight) / 2;
+		if(trace->drawStart < 0)
+			trace->drawStart = 0;
+		trace->drawEnd = (trace->lineHeight + sign.height) / 2;
+		if(trace->drawEnd >= sign.height)
+				trace->drawEnd = sign.height - 1;
 
-	if (ray->rayDirX < 0)
-	  {
-        stepX = -1;
-        sideDistX = (sign.posX- mapX) * deltaDistX;
-      }
-      else
-      {
-        stepX = 1;
-        sideDistX = (mapX + 1.0 - sign.posX) * deltaDistX;
-      }
-      if (ray->rayDirY < 0)
-      {
-        stepY = -1;
-        sideDistY = (sign.posY - mapY) * deltaDistY;
-      }
-      else
-      {
-        stepY = 1;
-        sideDistY = (mapY + 1.0 - sign.posY) * deltaDistY;
-      }
+		// 	//tex rend
 
-	while (hit == 0)
-      {
-        //jump to next map square, OR in x-direction, OR in y-direction
-        if (sideDistX < sideDistY)
-        {
-          sideDistX += deltaDistX;
-          mapX += stepX;
-          side = 0;
-        }
-        else
-        {
-          sideDistY += deltaDistY;
-          mapY += stepY;
-          side = 1;
-        }
-        //Check if ray has hit a wall
-        if (sign.map_arr[mapX][mapY] == '1')
-			hit = 1;
-      }
-
-	  if (side == 0)
-	  	perpWallDist = (mapX - sign.posX + (1 - stepX) / 2) / ray->rayDirX;
-      else
-	  	perpWallDist = (mapY - sign.posY + (1 - stepY) / 2) / ray->rayDirY;
-
-		if (perpWallDist == 0)
-			perpWallDist += 0.05;
-
-	  //Calculate height of line to draw on screen
-      int lineHeight = (int)(sign.height / perpWallDist);
-
-      //calculate lowest and highest pixel to fill in current stripe
-      int drawStart = (sign.height - lineHeight) / 2;
-      if(drawStart < 0)
-	  	drawStart = 0;
-      int drawEnd = (lineHeight + sign.height) / 2;
-      if(drawEnd >= sign.height)
-	  		drawEnd = sign.height - 1;
-
-	// 	//tex rend
-
-		double wallX;
-            if (side == 0)
-			wallX = sign.posY + perpWallDist * ray->rayDirY;
-      		else
-			  wallX = sign.posX + perpWallDist * ray->rayDirX;
-      wallX = wallX - floor((wallX));
-      int texWidth = 64;
-      int texX = (int)(wallX * (double)(texWidth));
-      if(side == 0 && ray->rayDirX > 0)
-	  		texX = texWidth - texX - 1;
-      if(side == 1 && ray->rayDirY < 0)
-	  		texX = texWidth - texX - 1;
+		if (trace->side == 0)
+			trace->wallX = sign.posY + trace->perpWallDist * ray->rayDirY;
+		else
+			trace->wallX = sign.posX + trace->perpWallDist * ray->rayDirX;
+		trace->wallX = trace->wallX - floor((trace->wallX));
+		int texWidth = 64;
+		trace->texX = (int)(trace->wallX * (double)(texWidth));
+		if(trace->side == 0 && ray->rayDirX > 0)
+			trace->texX = texWidth - trace->texX - 1;
+		if(trace->side == 1 && ray->rayDirY < 0)
+			trace->texX = texWidth - trace->texX - 1;
 
 		//
 
-		if (sign.map_arr[mapX][mapY] == '2')
+		if (sign.map_arr[trace->mapX][trace->mapY] == '2')
 		{
 
 		}
-			else if (sign.posY > mapY && side && sign.map_arr[mapX][mapY] != '2')
-			{
-				ft_line2(i, drawStart, drawEnd, &img, texX, &ray->tex.no, lineHeight, side, sign);
-			}
-			else if (sign.posY < mapY && side && sign.map_arr[mapX][mapY] != '2')
-			{
-				ft_line2(i, drawStart, drawEnd, &img, texX, &ray->tex.so, lineHeight, side, sign);
-			}
-			else if (sign.posX > mapX && !side && sign.map_arr[mapX][mapY] != '2')
-			{
-				ft_line2(i, drawStart, drawEnd, &img, texX, &ray->tex.we, lineHeight, side, sign);
-			}
-			else if (sign.posX < mapX && !side && sign.map_arr[mapX][mapY] != '2')
-			{
-				ft_line2(i, drawStart, drawEnd, &img, texX, &ray->tex.ea, lineHeight, side, sign);
-			}
+		else if (sign.posY > trace->mapY && trace->side && sign.map_arr[trace->mapX][trace->mapY] != '2')
+		{
+			ft_line2(i, trace->drawStart, trace->drawEnd, &img, trace->texX, &ray->tex.no, trace->lineHeight, trace->side, sign);
+		}
+		else if (sign.posY < trace->mapY && trace->side && sign.map_arr[trace->mapX][trace->mapY] != '2')
+		{
+			ft_line2(i, trace->drawStart, trace->drawEnd, &img, trace->texX, &ray->tex.so, trace->lineHeight, trace->side, sign);
+		}
+		else if (sign.posX > trace->mapX && !trace->side && sign.map_arr[trace->mapX][trace->mapY] != '2')
+		{
+			ft_line2(i, trace->drawStart, trace->drawEnd, &img, trace->texX, &ray->tex.we, trace->lineHeight, trace->side, sign);
+		}
+		else if (sign.posX < trace->mapX && !trace->side && sign.map_arr[trace->mapX][trace->mapY] != '2')
+		{
+			ft_line2(i, trace->drawStart, trace->drawEnd, &img, trace->texX, &ray->tex.ea, trace->lineHeight, trace->side, sign);
+		}
 
 		int zz;
 
 		zz = 0;
-		while (zz < drawStart)
+		while (zz < trace->drawStart)
 		{
 			my_mlx_pixel_put(&img, i, zz, sign.c);
 			zz++;
 		}
-		zz = drawEnd;
+		zz = trace->drawEnd;
 		while (zz < sign.height)
 		{
 			my_mlx_pixel_put(&img, i, zz, sign.f);
@@ -294,56 +160,15 @@ int		ft_ray(t_ray *ray)
 	return (0);
 }
 
-int		finish(t_ray *ray)
-{
-	mlx_destroy_window(ray->mlx, ray->win);
-	exit (0);
-	return (0);
-}
-
-int		key_pressed(int keycode, t_ray *ray)
-{
-	if (keycode == W)
-		ray->key.w = 1;
-	if (keycode == SS)
-		ray->key.s = 1;
-	if (keycode == A)
-		ray->key.a = 1;
-	if (keycode == D)
-		ray->key.d = 1;
-	if (keycode == LEFT)
-		ray->key.left = 1;
-	if (keycode == RIGHT)
-		ray->key.right = 1;
-	if (keycode == EXIT)
-		finish(ray);
-	return (0);
-}
-
-int		key_unpressed(int keycode, t_ray *ray)
-{
-	if (keycode == W)
-		ray->key.w = 0;
-	if (keycode == SS)
-		ray->key.s = 0;
-	if (keycode == A)
-		ray->key.a = 0;
-	if (keycode == D)
-		ray->key.d = 0;
-	if (keycode == LEFT)
-		ray->key.left = 0;
-	if (keycode == RIGHT)
-		ray->key.right = 0;
-	return (0);
-}
-
 int		loop_main(t_ray *ray)
 {
+	map_cub *sign;
 
+	sign = &ray->sign;
 	ray->mlx = mlx_init();
-	ray->win = mlx_new_window(ray->mlx, ray->sign.width, ray->sign.height, "CUB3D");
-	parse_color_f(ray, ray->sign.F, &ray->sign);
-	parse_color_c(ray, ray->sign.C, &ray->sign);
+	ray->win = mlx_new_window(ray->mlx, sign->width, sign->height, "CUB3D");
+	parse_color_f(ray, sign->F, sign);
+	parse_color_c(ray, sign->C, sign);
 	init_textures(ray);
 	mlx_hook(ray->win, 2, 0, &key_pressed, ray);
 	mlx_hook(ray->win, 17, 0, finish, ray);
