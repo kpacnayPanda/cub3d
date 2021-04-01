@@ -6,7 +6,7 @@
 #    By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/24 15:14:17 by mrosette          #+#    #+#              #
-#    Updated: 2021/04/01 17:53:36 by mrosette         ###   ########.fr        #
+#    Updated: 2021/04/01 19:41:23 by mrosette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRCS = 	src/id_parsing.c \
 		src/move_player.c \
 		src/move_player2.c \
 		src/ray_utils.c \
+		src/draw.c \
 
 #**********************MAIN************************#
 MAIN_DIR = src/
