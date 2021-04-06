@@ -4,6 +4,9 @@
 		"unistd.h": "c",
 		"mlx.h": "c",
 		"fcntl.h": "c",
-		"locale": "c"
+		"locale": "c",
+		"__threading_support": "c",
+		"atomic": "c",
+		"mutex": "c"
 	}
 }

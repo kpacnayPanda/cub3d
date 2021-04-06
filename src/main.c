@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:44:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/06 14:58:12 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/06 16:39:17 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int		parse_file(map_cub *sign, char *str)
 	i = 0;
 	line = NULL;
 	fd = open(str, O_RDONLY);
+	if (fd == -1)
+		error_handler(4);
 	while ((i = cub_parser(fd, &line)))
 	{
 		printf("i = %d %s\n", i, line);
@@ -50,6 +52,7 @@ int		cub_start(char *str)
 	if (parse_file(&sign, str))
 	{
 		find_pos(&sign);
+		check_for_valid(&sign);
 		//find_sprites(&sign);
 
 		//check control
@@ -71,6 +74,7 @@ int		cub_start(char *str)
 			printf("%s\n", sign.map_arr[ii]);
 			ii++;
 		}
+		sign.map_arr[(int)sign.posX][(int)sign.posY] = '0';
 		init_st(&ray, &sign, &key, &trace);
 		loop_main(&ray);
 	}
@@ -83,9 +87,10 @@ int		main(int argc, char **argv)
 		cub_start(argv[1]);
 	else
 	{
-		if (argc == 3)
+		if (argc == 3 && (ft_strncmp(argv[2], "--save", 6) == 0))
 			printf("MAKE MAP PIC");
-		//else
-			//print_error(0);
+		else
+			error_handler(1);
 	}
+	return (0);
 }

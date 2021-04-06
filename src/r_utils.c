@@ -6,21 +6,19 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 17:08:53 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/06 14:40:53 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/06 15:06:33 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-void	take_width_r(char *str, int flag, map_cub *sign)
+void	take_width_r(char *str, int flag, map_cub *sign, int i)
 {
-	int		i;
 	int		widthlen;
 	char	*tmp;
 	int		num;
 
 	widthlen = 0;
-	i = 0;
 	num = 0;
 	while (str[i] != ' ' && str[i] != '\0')
 	{
@@ -54,12 +52,12 @@ void	take_r_specs(char *str, map_cub *sign)
 	{
 		if (ft_isdigit(str[i]) && (flag == 0))
 		{
-			take_width_r(&str[i], flag, sign);
+			take_width_r(&str[i], flag, sign, 0);
 			flag = 1;
 		}
 		if (ft_isdigit(str[i]) && (flag == 2))
 		{
-			take_width_r(&str[i], flag, sign);
+			take_width_r(&str[i], flag, sign, 0);
 			flag = 3;
 		}
 		if (str[i] == ' ')

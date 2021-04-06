@@ -6,11 +6,22 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 17:03:11 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/06 14:59:28 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/06 15:08:14 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
+
+void	init_sp(t_ray *ray)
+{
+	t_img sp;
+	t_tex texes;
+
+	sp.img = mlx_xpm_file_to_image(ray->mlx, "pics/barrel.xpm", &sp.w, &sp.h);
+	sp.addr = mlx_get_data_addr(sp.img, &sp.bpr, &sp.l_len, &sp.end);
+	texes.sp = sp;
+	ray->tex = texes;
+}
 
 void	init_textures(t_ray *ray)
 {
@@ -18,7 +29,6 @@ void	init_textures(t_ray *ray)
 	t_img t2;
 	t_img t3;
 	t_img t4;
-	t_img sp;
 	t_tex texes;
 
 	t1.img = mlx_xpm_file_to_image(ray->mlx, "pics/brick.xpm", &t1.w, &t1.h);
@@ -29,12 +39,10 @@ void	init_textures(t_ray *ray)
 	t3.addr = mlx_get_data_addr(t3.img, &t3.bpr, &t3.l_len, &t3.end);
 	t4.img = mlx_xpm_file_to_image(ray->mlx, "pics/metal.xpm", &t4.w, &t4.h);
 	t4.addr = mlx_get_data_addr(t4.img, &t4.bpr, &t4.l_len, &t4.end);
-	sp.img = mlx_xpm_file_to_image(ray->mlx, "pics/barrel.xpm", &sp.w, &sp.h);
-	sp.addr = mlx_get_data_addr(sp.img, &sp.bpr, &sp.l_len, &sp.end);
+	init_sp(ray);
 	texes.no = t1;
 	texes.so = t2;
 	texes.we = t3;
 	texes.ea = t4;
-	texes.sp = sp;
 	ray->tex = texes;
 }

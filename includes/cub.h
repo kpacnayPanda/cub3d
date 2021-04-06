@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:36:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/06 14:52:06 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/06 16:14:03 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,5 +185,7 @@ void	draw_walls(t_trace *trace, map_cub sign, t_ray *ray, t_img *img);
 void	draw_f_c(t_trace *trace, t_img img, map_cub sign, t_ray *ray);
 void	sprite_rendering(t_ray *ray, double *dis_buff);
 void	init_ray0(t_trace *trace, t_ray *ray, map_cub sign);
+void	error_handler(int err);
+void	check_for_valid(map_cub *sign);
 
 #endif
