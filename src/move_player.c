@@ -6,13 +6,13 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 16:56:07 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/01 20:45:59 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/06 14:38:50 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-void		key_a(t_ray *ray)
+void	key_a(t_ray *ray)
 {
 	map_cub *sign;
 
@@ -25,7 +25,7 @@ void		key_a(t_ray *ray)
 		sign->posX -= ray->dirY * ray->movespeed;
 }
 
-void		key_w(t_ray *ray)
+void	key_w(t_ray *ray)
 {
 	map_cub *sign;
 
@@ -38,7 +38,7 @@ void		key_w(t_ray *ray)
 		sign->posY += ray->dirY * ray->movespeed;
 }
 
-void		key_s(t_ray *ray)
+void	key_s(t_ray *ray)
 {
 	map_cub *sign;
 
@@ -51,7 +51,7 @@ void		key_s(t_ray *ray)
 		sign->posY -= ray->dirY * ray->movespeed;
 }
 
-void		key_d(t_ray *ray)
+void	key_d(t_ray *ray)
 {
 	map_cub *sign;
 
@@ -64,7 +64,7 @@ void		key_d(t_ray *ray)
 		sign->posX += ray->dirY * ray->movespeed;
 }
 
-void		move_player(t_ray *ray)
+void	move_player(t_ray *ray)
 {
 	if (ray->key.exit)
 		exit(0);

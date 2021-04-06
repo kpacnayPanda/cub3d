@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:13:11 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/01 20:49:29 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/06 14:40:20 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int		find_borders(char *str, map_cub *sign)
 {
-	int	i;
-	int	len;
-	int	flag;
+	int i;
+	int len;
+	int flag;
 
 	i = 0;
 	len = ft_strlen(str);

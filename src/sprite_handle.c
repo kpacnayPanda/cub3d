@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   sprite_handle.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/10 14:49:12 by mrosette          #+#    #+#             */
-/*   Updated: 2020/11/10 14:59:21 by mrosette         ###   ########.fr       */
+/*   Created: 2021/04/06 13:18:54 by mrosette          #+#    #+#             */
+/*   Updated: 2021/04/06 14:27:22 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "includes/cub.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	sprite_rendering(t_ray *ray, double *dis_buff)
 {
-	t_list		*node;
 
-	if ((node = ft_lstlast(*lst)))
-	{
-		node->next = new;
-	}
-	else
-	{
-		*lst = new;
-	}
-	new->next = NULL;
 }

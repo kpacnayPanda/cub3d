@@ -6,28 +6,22 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 15:56:45 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/01 21:00:32 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/06 14:45:00 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-void	find_path(char *str, map_cub *sign, char id, int i)
+void	find_path(char *str, map_cub *sign, char id)
 {
-	int flag;
+	int i;
 	int start;
 	int end;
 
-	flag = 1;
-	while (str[i] && flag == 1)
-	{
-		if (str[i] == '.')
-		{
-			flag = 2;
-			start = i;
-		}
+	i = 0;
+	while (str[i] != '.')
 		i++;
-	}
+	start = i;
 	end = ft_strlen(str) - 1;
 	if (id == 'N')
 		sign->NO = copy(str, start, end);

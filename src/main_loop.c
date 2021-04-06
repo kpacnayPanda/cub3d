@@ -6,18 +6,14 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 16:27:17 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/01 21:02:29 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/06 14:53:19 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-void	init_ray(t_trace *trace, t_ray *ray, map_cub sign)
+void	init_ray1(t_trace *trace, t_ray *ray, map_cub sign)
 {
-	trace->deltaDistX = fabs(1 / ray->rayDirX);
-	trace->deltaDistY = fabs(1 / ray->rayDirY);
-	trace->hit = 0;
-	trace->side = -1;
 	if (ray->rayDirX < 0)
 	{
 		trace->stepX = -1;
@@ -99,26 +95,25 @@ int		ft_ray(t_ray *ray)
 	t_img	img;
 	map_cub	sign;
 	t_trace	*trace;
+	double	dis_buff[ray->sign.width];
 
 	sign = ray->sign;
 	trace = &ray->trace;
 	move_player(ray);
 	ray->i = 0;
 	img.img = mlx_new_image(ray->mlx, sign.width, sign.height);
-	img.addr = mlx_get_data_addr(img.img, &img.bpr, &img.l_len, &img.endian);
+	img.addr = mlx_get_data_addr(img.img, &img.bpr, &img.l_len, &img.end);
 	while (ray->i < sign.width)
 	{
-		ray->CameraX = 2 * ray->i / (double)sign.width - 1;
-		ray->rayDirX = ray->dirX + ray->planeX * ray->CameraX;
-		ray->rayDirY = ray->dirY + ray->planeY * ray->CameraX;
-		trace->mapX = (int)sign.posX;
-		trace->mapY = (int)sign.posY;
-		init_ray(trace, ray, sign);
+		init_ray0(trace, ray, sign);
+		init_ray1(trace, ray, sign);
 		ray_shoot(trace, sign, ray);
 		draw_walls(trace, sign, ray, &img);
 		draw_f_c(trace, img, sign, ray);
+		dis_buff[ray->i] = trace->perpWallDist;
 		ray->i++;
 	}
+	//sprite_rendering(ray, dis_buff);
 	mlx_put_image_to_window(ray->mlx, ray->win, img.img, 0, 0);
 	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:39:58 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/01 20:29:50 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/06 14:29:58 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-char		*f_strjoin(char *str, char *str2)
+char	*f_strjoin(char *str, char *str2)
 {
 	int		slen;
 	int		s2len;
@@ -34,7 +34,7 @@ char		*f_strjoin(char *str, char *str2)
 	return (newstr);
 }
 
-char		*copy(char *str, int start, int end)
+char	*copy(char *str, int start, int end)
 {
 	char	*newstr;
 	int		len;
@@ -55,7 +55,7 @@ char		*copy(char *str, int start, int end)
 	return (newstr);
 }
 
-int			check(char *str)
+int		check(char *str)
 {
 	int i;
 
@@ -71,7 +71,7 @@ int			check(char *str)
 	return (0);
 }
 
-int			ft_len(int n)
+int		ft_len(int n)
 {
 	int count;
 
@@ -91,7 +91,7 @@ int			ft_len(int n)
 	return (count);
 }
 
-int			finish(t_ray *ray)
+int		finish(t_ray *ray)
 {
 	mlx_destroy_window(ray->mlx, ray->win);
 	exit(0);

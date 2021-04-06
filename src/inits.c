@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 16:11:08 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/01 20:28:52 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/06 15:01:36 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	init_st(t_ray *ray, map_cub *sign, t_key *key, t_trace *trace)
 	ray->CameraX = 0;
 	ray->rayDirX = 0;
 	ray->rayDirY = 0;
-	ray->rotspeed = 0.02;
+	ray->rotspeed = 0.05;
 	ray->movespeed = 0.1;
 	ray->sign = *sign;
 	ray->key = *key;

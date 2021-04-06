@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:44:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/01 20:54:35 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/06 14:58:12 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int		cub_start(char *str)
 	t_key	key;
 	t_ray	ray;
 	t_trace	trace;
+	int ii = 0; //del
 
 	ft_set_args(&sign);
 	ft_set_keys(&key);
@@ -49,7 +50,9 @@ int		cub_start(char *str)
 	if (parse_file(&sign, str))
 	{
 		find_pos(&sign);
-		//check contoral
+		//find_sprites(&sign);
+
+		//check control
 		printf("width: %d\n", sign.width);
 		printf("height: %d\n", sign.height);
 		printf("north: %s\n", sign.NO);
@@ -63,7 +66,6 @@ int		cub_start(char *str)
 		printf("mapwidth: %d\n", sign.mapwidth);
 		printf("posX = %f\n", sign.posX);
 		printf("posY = %f\n", sign.posY);
-		int ii = 0;
 		while (ii < sign.mapheight)
 		{
 			printf("%s\n", sign.map_arr[ii]);
@@ -79,6 +81,11 @@ int		main(int argc, char **argv)
 {
 	if (argc == 2 && ft_strnstr(argv[1], ".cub", ft_strlen(argv[1])))
 		cub_start(argv[1]);
-	else if (argc == 3)
-		printf("MAKE MAP PIC");
+	else
+	{
+		if (argc == 3)
+			printf("MAKE MAP PIC");
+		//else
+			//print_error(0);
+	}
 }
