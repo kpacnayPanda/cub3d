@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 17:08:53 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/06 15:06:33 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/10 18:09:29 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,11 @@ void	take_r_specs(char *str, map_cub *sign)
 		}
 		i++;
 	}
+}
+
+int		check2(char c)
+{
+	if (c == 'N' || c == 'W' || c == 'E' || c == 'S')
+		return (1);
+	return (0);
 }

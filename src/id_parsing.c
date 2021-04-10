@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:21:06 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/06 14:28:50 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/10 17:40:59 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,14 @@ char	check_for_id(char *line)
 	id = '0';
 	if (line[i] == 'S' && line[i + 1] == 'O')
 		id = 'S';
-	if (line[i] == 'S' && line[i + 1] != 'O')
+	if (line[i] == 'S' && line[i + 1] == ' ')
 		id = 'T';
-	if (line[i] == 'W' || line[i] == 'E' || line[i] == 'R')
+	if (line[i] == 'R')
 		id = line[i];
+	if (line[i] == 'E' && line[i + 1] == 'A')
+		id = 'E';
+	if (line[i] == 'W' && line[i + 1] == 'E')
+		id = 'W';
 	if (line[i] == 'F' || line[i] == 'C')
 		id = line[i];
 	if (line[i] == 'N' && line[i + 1] == 'O')
