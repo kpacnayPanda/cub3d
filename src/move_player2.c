@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 17:41:39 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/10 18:14:05 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/10 18:23:25 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,14 @@ int		check_for_wall(t_ray *ray,double dir, char ax)
 	sign = &ray->sign;
 	if (ax == 'x')
 	{
-		if (sign->map_arr[(int)(sign->posY)][(int)(sign->posX + dir *
-			ray->movespeed - 0.1 * (dir < 0) + 0.1 * (dir > 0))] == '0' ||
-			check2(sign->map_arr[(int)(sign->posY)][(int)(sign->posX + dir *
-			ray->movespeed - 0.1 * (dir < 0) + 0.1 * (dir > 0))]))
+		if (sign->map_arr[(int)(sign->posX + dir * ray->movespeed - 0.1 *
+					(dir < 0) + 0.1 * (dir > 0))][(int)sign->posY] == '0')
 			return (1);
 	}
 	if (ax == 'y')
 	{
-		if (sign->map_arr[(int)(sign->posY + dir * ray->movespeed - 0.1 *
-			(dir < 0) + 0.1 * (dir > 0))][(int)(sign->posX)] == '0' ||
-			check2(sign->map_arr[(int)(sign->posY + dir * ray->movespeed - 0.1 *
-			(dir < 0) + 0.1 * (dir > 0))][(int)(sign->posX)]))
+		if (sign->map_arr[(int)sign->posX][(int)(sign->posY + dir *
+				ray->movespeed - 0.1 * (dir < 0) + 0.1 * (dir > 0))] == '0')
 			return (1);
 	}
 	return (0);

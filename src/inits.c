@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 16:11:08 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/06 15:01:36 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/10 18:55:13 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,35 @@ void	ft_set_keys(t_key *key)
 	key->right = 0;
 }
 
+void	set_dirs(t_ray *ray)
+{
+	if (ray->sign.player == 'W')
+	{
+		ray->dirX = 0;
+		ray->dirY = -1;
+	}
+	if (ray->sign.player == 'E')
+	{
+		ray->dirX = 0;
+		ray->dirY = 1;
+	}
+	if (ray->sign.player == 'S')
+	{
+		ray->dirX = 1;
+		ray->dirY = 0;
+	}
+	if (ray->sign.player == 'N')
+	{
+		ray->dirX = -1;
+		ray->dirY = 0;
+	}
+	ray->planeX = (cos(-1.5708) * ray->dirX - sin(-1.5708) * ray->dirY) * 0.6;
+	ray->planeY = (sin(-1.5708) * ray->dirX + cos(-1.5708) * ray->dirY) * 0.6;
+}
+
 void	init_st(t_ray *ray, map_cub *sign, t_key *key, t_trace *trace)
 {
 	ray->win = NULL;
-	ray->dirX = -1;
-	ray->dirY = 0;
-	ray->planeX = 0;
-	ray->planeY = 0.66;
 	ray->oldtime = 0;
 	ray->time = 0;
 	ray->CameraX = 0;
@@ -59,6 +81,7 @@ void	init_st(t_ray *ray, map_cub *sign, t_key *key, t_trace *trace)
 	ray->sign = *sign;
 	ray->key = *key;
 	ray->trace = *trace;
+	set_dirs(ray);
 }
 
 void	ft_set_trace(t_trace *trace)

@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 15:56:45 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/06 14:45:00 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/10 18:57:52 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	find_path(char *str, map_cub *sign, char id)
 {
-	int i;
-	int start;
-	int end;
+	int	i;
+	int	start;
+	int	end;
 
 	i = 0;
 	while (str[i] != '.')
@@ -37,10 +37,10 @@ void	find_path(char *str, map_cub *sign, char id)
 
 void	take_color(char *str, map_cub *sign, char id)
 {
-	int i;
-	int flag;
-	int start;
-	int end;
+	int	i;
+	int	flag;
+	int	start;
+	int	end;
 
 	i = 0;
 	flag = 1;

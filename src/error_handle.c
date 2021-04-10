@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 15:27:16 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/06 16:40:55 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/10 18:34:51 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	error_handler(int err)
 	if (err == 1)
 		ft_putendl_fd("INVALID ARGUMENTS", 0);
 	if (err == 2)
-		ft_putendl_fd("INVALID CONFIG", 0);
+		ft_putendl_fd("INVALID CONFIG OR MAP", 0);
 	if (err == 3)
 		ft_putendl_fd("INVALID MAP", 0);
 	if (err == 4)

@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:44:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/10 17:39:22 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/10 18:34:56 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int		parse_file(map_cub *sign, char *str)
 	free(line);
 	sign->map_arr[sign->iheight] = NULL;
 	if (!map_error_check(sign))
-		return (0);
+		error_handler(3);
 	return (1);
 }
 

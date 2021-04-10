@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:39:58 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/06 14:29:58 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/10 18:59:08 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*copy(char *str, int start, int end)
 
 	len = end - start + 1;
 	i = 0;
-	newstr = (char*)malloc((len) * sizeof(char));
+	newstr = (char *)malloc((len) * sizeof(char));
 	if (!newstr)
 		return (NULL);
 	while (len != 0 && start != end + 1)

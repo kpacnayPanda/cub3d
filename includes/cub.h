@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:36:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/10 18:14:15 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/10 18:38:22 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct	s_stuct
 	char			*S;
 	char			*F;
 	char			*C;
-
+	char			player;
 	int				mapwidth;
 	int				mapheight;
 	int				iheight;
