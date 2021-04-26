@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 14:14:23 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/10 18:56:56 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/26 13:17:05 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void	find_pos(map_cub *sign)
 			{
 				if (flag == 1)
 					error_handler(3);
-				sign->posX = i + 0.5;
-				sign->posY = j + 0.5;
+				sign->posX = j + 0.5;
+				sign->posY = i + 0.5;
 				flag = 1;
 				sign->player = sign->map_arr[i][j];
 			}

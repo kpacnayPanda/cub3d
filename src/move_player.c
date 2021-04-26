@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 16:56:07 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/10 18:31:27 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/26 13:54:09 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,49 +15,65 @@
 void	key_a(t_ray *ray)
 {
 	map_cub *sign;
+	double posx;
+	double posy;
 
 	sign = &(ray->sign);
-	if (sign->map_arr[(int)sign->posX]
-					[(int)(sign->posY + ray->dirX * ray->movespeed)] == '0')
-		sign->posY += ray->dirX * ray->movespeed;
-	if (sign->map_arr[(int)(sign->posX - ray->dirY * ray->movespeed)]
-					[(int)sign->posY] == '0')
-		sign->posX -= ray->dirY * ray->movespeed;
+	posx = sign->posX + ray->dirY * ray->movespeed;
+	posy = sign->posY - ray->dirX * ray->movespeed;
+	if (check_for_wall(posx, sign, 'x'))
+		sign->posX += ray->dirY * ray->movespeed;
+	if (check_for_wall(posy, sign, 'y'))
+		sign->posY -= ray->dirX * ray->movespeed;
 }
 
 void	key_w(t_ray *ray)
 {
 	map_cub *sign;
+	double posx;
+	double posy;
 
 	sign = &(ray->sign);
-	if (check_for_wall(ray, ray->dirX, 'x'))
+	posx = sign->posX + ray->dirX * ray->movespeed;
+	posy = sign->posY + ray->dirY * ray->movespeed;
+	if (check_for_wall(posx, sign, 'x'))
 		sign->posX += ray->dirX * ray->movespeed;
-	if (check_for_wall(ray, ray->dirY, 'y'))
+	if (check_for_wall(posy, sign, 'y'))
 		sign->posY += ray->dirY * ray->movespeed;
 }
 
 void	key_s(t_ray *ray)
 {
 	map_cub *sign;
+	double posx;
+	double posy;
 
 	sign = &(ray->sign);
-	if (check_for_wall(ray, -ray->dirX, 'x'))
+	posx = sign->posX - ray->dirX * ray->movespeed;
+	posy = sign->posY - ray->dirY * ray->movespeed;
+	if (check_for_wall(posx, sign, 'x'))
 		sign->posX -= ray->dirX * ray->movespeed;
-	if (check_for_wall(ray, -ray->dirY, 'y'))
+	if (check_for_wall(posy, sign,'y'))
 		sign->posY -= ray->dirY * ray->movespeed;
 }
 
 void	key_d(t_ray *ray)
 {
 	map_cub *sign;
+	double posx;
+	double posy;
 
 	sign = &(ray->sign);
-	if (sign->map_arr[(int)sign->posX]
-					[(int)(sign->posY - ray->dirX * ray->movespeed)] == '0')
-		sign->posY -= ray->dirX * ray->movespeed;
-	if (sign->map_arr[(int)(sign->posX + ray->dirY * ray->movespeed)]
-					[(int)sign->posY] == '0')
-		sign->posX += ray->dirY * ray->movespeed;
+	posx = sign->posX - ray->dirY * ray->movespeed;
+	posy = sign->posY + ray->dirX * ray->movespeed;
+	if (check_for_wall(posx, sign, 'x'))
+	{
+		sign->posX -= ray->dirY * ray->movespeed;
+	}
+	if (check_for_wall(posy, sign, 'y'))
+	{
+		sign->posY += ray->dirX * ray->movespeed;
+	}
 }
 
 void	move_player(t_ray *ray)

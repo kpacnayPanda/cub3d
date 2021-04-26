@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 17:08:53 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/10 18:09:29 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/24 23:27:25 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,27 @@ int		check2(char c)
 	if (c == 'N' || c == 'W' || c == 'E' || c == 'S')
 		return (1);
 	return (0);
+}
+
+void	find_sprites(map_cub *sign)
+{
+	int i;
+	int j;
+	int count;
+
+	i = 0;
+	j = 0;
+	count = 0;
+	while (i < sign->mapheight)
+	{
+		while (j < sign->mapwidth)
+		{
+			if (sign->map_arr[i][j] == '2')
+				count++;
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	sign->spp_count = count;
 }

@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:36:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/10 18:38:22 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/26 13:57:50 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct	s_stuct
 	double			posY;
 	unsigned int	f;
 	unsigned int	c;
+	int				spp_count;
 
 	char			**map_arr;
 }				map_cub;
@@ -89,7 +90,9 @@ typedef struct	s_sprire
 {
 	double	x;
 	double	y;
-	double	**sprites;
+	double	dist_x;
+	double	dist_y;
+	double	dist;
 }				t_sprite;
 
 
@@ -141,10 +144,20 @@ typedef struct	s_ray {
 	double	rotspeed;
 	double	movespeed;
 	int		i;
-	map_cub	sign;
-	t_key	key;
-	t_tex	tex;
-	t_trace	trace;
+	double	transx;
+	double	transy;
+	int		sp_screen;
+	int		sp_height;
+	int		sp_width;
+	int		drawsx;
+	int		drawsy;
+	int		drawex;
+	int		drawey;
+	map_cub		sign;
+	t_key		key;
+	t_tex		tex;
+	t_trace		trace;
+	t_sprite	**sprite;
 }				t_ray;
 
 
@@ -180,15 +193,17 @@ void	move_right(t_ray *ray);
 
 unsigned int	get_color(t_img *data, int x, int y);
 void			my_mlx_pixel_put(t_img *img, int x, int y, unsigned int color);
-//void	ft_line2(int i, int drawStart, int drawEnd, t_img *img, int texX, t_img *wood, int lineHeight, int side, map_cub sign);
 void	draw_walls(t_trace *trace, map_cub sign, t_ray *ray, t_img *img);
 void	draw_f_c(t_trace *trace, t_img img, map_cub sign, t_ray *ray);
-void	sprite_rendering(t_ray *ray, double *dis_buff);
 void	init_ray0(t_trace *trace, t_ray *ray, map_cub sign);
 void	error_handler(int err);
 void	check_for_valid(map_cub *sign);
 
 int		check2(char c);
-int		check_for_wall(t_ray *ray,double dir, char ax);
+int		check_for_wall(double pos, map_cub *sign, char ax);
+void	find_sprites(map_cub *sign);
+void	init_sprite(t_ray *ray);
+void	sprite_rend2(t_ray *ray, int count, double *dist_buff);
+void	sprite_rendering(t_ray *ray, double *dis_buff, t_img *img, t_img *wood);
 
 #endif

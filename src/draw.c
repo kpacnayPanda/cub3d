@@ -6,64 +6,53 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 19:36:41 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/06 16:36:59 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/26 12:49:32 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-void	ft_line2(t_ray *ray, t_img *img, t_img *wood, map_cub sign)
+void	ft_line2(t_ray *ray, t_img *img, t_img *wood, t_trace *trace, int y)
 {
-	int		draws;
-	int		drawe;
-	t_trace	*trace;
-
-	trace = &ray->trace;
-	draws = trace->drawStart;
-	drawe = trace->drawEnd;
-	trace->step = 1.0 * 64 / trace->lineh;
-	trace->drawing = (double)draws;
-	trace->texPos = (draws - sign.height / 2 + trace->lineh / 2) * trace->step;
-	while (draws < drawe)
-	{
-		if (trace->texPos > ((double)64 - 1))
-			trace->texPos = 64 - 1;
-		if (trace->texPos < 0)
-			trace->texPos = 0;
-		trace->tex_y = (int)trace->texPos;
+		trace->tex_y = (int)trace->texPos & (64 - 1);
 		trace->color = ((int*)wood->addr)[64 * trace->tex_y + trace->texX];
-		my_mlx_pixel_put(img, ray->i, draws, trace->color);
-		draws++;
-		trace->texPos += trace->step;
-	}
+		my_mlx_pixel_put(img, ray->i, y, trace->color);
 }
 
 void	draw_walls(t_trace *trace, map_cub sign, t_ray *ray, t_img *img)
 {
 	int y;
-	int x;
 
-	y = trace->mapY;
-	x = trace->mapX;
-	if (sign.map_arr[x][y] == '2')
+	y = trace->drawStart;
+	if (trace->side == 0)
 	{
-		//draw
+		trace->step = 1.0 * 64 / trace->lineh;
+		trace->texX = 64 - trace->texX - 1;
 	}
-	else if (sign.posY > y && trace->side && sign.map_arr[x][y] != '2')
+	else
 	{
-		ft_line2(ray, img, &ray->tex.no, sign);
+		trace->step = 1.0 * 64 / trace->lineh;
+		trace->texX = 64 - trace->texX - 1;
 	}
-	else if (sign.posY < y && trace->side && sign.map_arr[x][y] != '2')
+	trace->texPos = (trace->drawStart - sign.height / 2 + trace->lineh / 2) * trace->step;
+	while (y < trace->drawEnd)
 	{
-		ft_line2(ray, img, &ray->tex.so, sign);
-	}
-	else if (sign.posX > x && !trace->side && sign.map_arr[x][y] != '2')
-	{
-		ft_line2(ray, img, &ray->tex.we, sign);
-	}
-	else if (sign.posX < x && !trace->side && sign.map_arr[x][y] != '2')
-	{
-		ft_line2(ray, img, &ray->tex.ea, sign);
+		trace->texPos += trace->step;
+		if (trace->side == 0)
+		{
+			if (trace->stepX < 0)
+				ft_line2(ray, img, &ray->tex.ea, trace, y);
+			else
+				ft_line2(ray, img, &ray->tex.we, trace, y);
+		}
+		else
+		{
+			if (trace->stepY < 0)
+				ft_line2(ray, img, &ray->tex.so, trace, y);
+			else
+				ft_line2(ray, img, &ray->tex.no, trace, y);
+		}
+		y++;
 	}
 }
 

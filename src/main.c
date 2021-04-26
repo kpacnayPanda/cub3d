@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:44:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/10 18:34:56 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/26 13:20:31 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ int		cub_start(char *str)
 	{
 		find_pos(&sign);
 		check_for_valid(&sign);
-		//find_sprites(&sign);
-
+		find_sprites(&sign);
+		printf("%d\n", sign.spp_count);
 		//check control
 		printf("width: %d\n", sign.width);
 		printf("height: %d\n", sign.height);
@@ -69,13 +69,16 @@ int		cub_start(char *str)
 		printf("mapwidth: %d\n", sign.mapwidth);
 		printf("posX = %f\n", sign.posX);
 		printf("posY = %f\n", sign.posY);
+		printf("player pos %c\n", sign.player);
 		while (ii < sign.mapheight)
 		{
 			printf("%s\n", sign.map_arr[ii]);
 			ii++;
 		}
-		sign.map_arr[(int)sign.posX][(int)sign.posY] = '0';
+		sign.map_arr[(int)sign.posY][(int)sign.posX] = '0';
+		printf("\n");
 		init_st(&ray, &sign, &key, &trace);
+		init_sprite(&ray);
 		loop_main(&ray);
 	}
 	return (0);

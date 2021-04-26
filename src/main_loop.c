@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 16:27:17 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/06 14:53:19 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/26 14:09:21 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ void	prepare_draw(t_trace *trace, t_ray *ray, map_cub sign)
 {
 	int	texwidth;
 
-	if (trace->perpWallDist == 0)
-		trace->perpWallDist += 0.05;
 	texwidth = 64;
 	trace->lineh = (int)(sign.height / trace->perpWallDist);
 	trace->drawStart = (sign.height - trace->lineh) / 2;
@@ -54,12 +52,9 @@ void	prepare_draw(t_trace *trace, t_ray *ray, map_cub sign)
 		trace->wallX = sign.posY + trace->perpWallDist * ray->rayDirY;
 	else
 		trace->wallX = sign.posX + trace->perpWallDist * ray->rayDirX;
-	trace->wallX = trace->wallX - floor((trace->wallX));
+	trace->wallX -= (int)trace->wallX;
+
 	trace->texX = (int)(trace->wallX * (double)(texwidth));
-	if (trace->side == 0 && ray->rayDirX > 0)
-		trace->texX = texwidth - trace->texX - 1;
-	if (trace->side == 1 && ray->rayDirY < 0)
-		trace->texX = texwidth - trace->texX - 1;
 }
 
 void	ray_shoot(t_trace *trace, map_cub sign, t_ray *ray)
@@ -78,7 +73,7 @@ void	ray_shoot(t_trace *trace, map_cub sign, t_ray *ray)
 			trace->mapY += trace->stepY;
 			trace->side = 1;
 		}
-		if (sign.map_arr[trace->mapX][trace->mapY] == '1')
+		if (sign.map_arr[trace->mapY][trace->mapX] == '1')
 			trace->hit = 1;
 	}
 	if (trace->side == 0)
@@ -113,8 +108,9 @@ int		ft_ray(t_ray *ray)
 		dis_buff[ray->i] = trace->perpWallDist;
 		ray->i++;
 	}
-	//sprite_rendering(ray, dis_buff);
+	sprite_rendering(ray, dis_buff, &img, &ray->tex.sp);
 	mlx_put_image_to_window(ray->mlx, ray->win, img.img, 0, 0);
+	mlx_destroy_image(ray->mlx, img.img);
 	return (0);
 }
 
@@ -128,6 +124,7 @@ int		loop_main(t_ray *ray)
 	parse_color_f(ray, sign->F, sign);
 	parse_color_c(ray, sign->C, sign);
 	init_textures(ray);
+	printf("kek\n");
 	mlx_hook(ray->win, 2, 0, &key_pressed, ray);
 	mlx_hook(ray->win, 17, 0, finish, ray);
 	mlx_hook(ray->win, 3, 0, &key_unpressed, ray);

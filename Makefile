@@ -6,7 +6,7 @@
 #    By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/24 15:14:17 by mrosette          #+#    #+#              #
-#    Updated: 2021/04/06 15:34:46 by mrosette         ###   ########.fr        #
+#    Updated: 2021/04/24 23:53:16 by mrosette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ SRCS = 	src/id_parsing.c \
 		src/draw.c \
 		src/sprite_handle.c \
 		src/error_handle.c \
+		src/sprite_render.c \
 
 #**********************MAIN************************#
 MAIN_DIR = src/
@@ -56,12 +57,12 @@ OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(MLX) $(OBJS)
+$(NAME): $(MLX) $(OBJS) $(HDRS)
 	$(MAKE) -C libft bonus
 	$(MAKE) -C minilibx_mms_20200219
 	gcc -o $(NAME) $(OBJS) -L libft -lft $(MLX2) $(MLXFLAG)
 
-%.o : %.c $(HEAD)
+%.o : %.c $(HDRS)
 	gcc -Wall $(MLXDIR) -I. -Ilibft -c $< -o $@
 
 $(MLX):

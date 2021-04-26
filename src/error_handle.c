@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 15:27:16 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/10 18:34:51 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/24 22:23:21 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	error_handler(int err)
 		ft_putendl_fd("FILE NOT FOUND", 0);
 	if (err == 5)
 		ft_putendl_fd("COLOR ERROR", 0);
+	if (err == 6)
+		ft_putendl_fd("SOMETHING WENT WRONG", 0);
 	exit(0);
 }
 

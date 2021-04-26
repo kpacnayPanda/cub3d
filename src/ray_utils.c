@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 17:53:25 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/06 14:54:38 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/26 13:32:20 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void			init_ray0(t_trace *trace, t_ray *ray, map_cub sign)
 	ray->CameraX = 2 * ray->i / (double)sign.width - 1;
 	ray->rayDirX = ray->dirX + ray->planeX * ray->CameraX;
 	ray->rayDirY = ray->dirY + ray->planeY * ray->CameraX;
-	trace->mapX = (int)sign.posX;
-	trace->mapY = (int)sign.posY;
+	trace->mapX = sign.posX;
+	trace->mapY = sign.posY;
 	trace->deltaDistX = fabs(1 / ray->rayDirX);
 	trace->deltaDistY = fabs(1 / ray->rayDirY);
 	trace->hit = 0;
