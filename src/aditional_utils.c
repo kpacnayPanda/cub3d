@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:39:58 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/27 17:49:02 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:18:32 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,21 @@ char	*f_strjoin(char *str, char *str2)
 char	*copy(char *str, int start, int end)
 {
 	char	*newstr;
-	int		len;
+	int		j;
 	int		i;
 
-	len = end - start + 1;
-	i = 0;
-	newstr = (char *)malloc((len) * sizeof(char));
+	i = start;
+	j = 0;
+	newstr = (char *)malloc((end - start + 1) * sizeof(char));
 	if (!newstr)
 		return (NULL);
-	while (len != 0 && start != end + 1)
+	while (str[i] != '\0')
 	{
-		newstr[i] = str[start];
+		newstr[j] = str[i];
 		i++;
-		start++;
+		j++;
 	}
-	newstr[i] = '\0';
+	newstr[j] = '\0';
 	return (newstr);
 }
 

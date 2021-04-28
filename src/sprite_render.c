@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 23:52:55 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/27 19:05:05 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 12:51:40 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	sprite_rendering(t_ray *ray, double *dis_buff, t_img *img)
 
 	sprite = ray->sprite;
 	trace = &ray->trace;
-	order = (int *)malloc(sizeof(char) * ray->sign.spp_count);
+	order = (int *)malloc(sizeof(int) * ray->sign.spp_count);
 	dist = (double *)malloc(sizeof(double) * ray->sign.spp_count);
 	i = 0;
 	while (i < ray->sign.spp_count)

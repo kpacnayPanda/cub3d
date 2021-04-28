@@ -6,13 +6,13 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:13:11 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/27 22:03:15 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 16:07:47 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-void	free_map(map_cub *sign)
+void	free_map(t_map_cub *sign)
 {
 	int	i;
 
@@ -38,7 +38,7 @@ void	free_tmp(char **tmp, int len)
 	free(tmp);
 }
 
-void	check_map3(map_cub *sign, char *str)
+void	check_map3(t_map_cub *sign, char *str)
 {
 	int	i;
 	int	j;
@@ -62,7 +62,7 @@ void	check_map3(map_cub *sign, char *str)
 	sign->iheight++;
 }
 
-void	check_map2(map_cub *sign, char *str, char **tmp)
+void	check_map2(t_map_cub *sign, char *str, char **tmp)
 {
 	int	i;
 	int	j;
@@ -91,7 +91,7 @@ void	check_map2(map_cub *sign, char *str, char **tmp)
 	check_map3(sign, str);
 }
 
-void	check_map(char *str, map_cub *sign)
+void	check_map(char *str, t_map_cub *sign)
 {
 	int		i;
 	int		j;

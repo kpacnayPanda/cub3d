@@ -6,13 +6,13 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 16:27:17 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/28 02:28:26 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:11:39 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-void	prepare_draw(t_trace *trace, t_ray *ray, map_cub sign)
+void	prepare_draw(t_trace *trace, t_ray *ray, t_map_cub sign)
 {
 	int	texwidth;
 
@@ -32,7 +32,7 @@ void	prepare_draw(t_trace *trace, t_ray *ray, map_cub sign)
 	trace->texX = (int)(trace->wallX * (double)(texwidth));
 }
 
-void	ray_shoot(t_trace *trace, map_cub sign, t_ray *ray)
+void	ray_shoot(t_trace *trace, t_map_cub sign, t_ray *ray)
 {
 	while (trace->hit == 0)
 	{
@@ -60,7 +60,7 @@ void	ray_shoot(t_trace *trace, map_cub sign, t_ray *ray)
 	prepare_draw(trace, ray, sign);
 }
 
-void	ray_start(t_ray *ray, t_trace *trace, map_cub sign, t_img img)
+void	ray_start(t_ray *ray, t_trace *trace, t_map_cub sign, t_img img)
 {
 	double	*dis_buff;
 
@@ -80,9 +80,9 @@ void	ray_start(t_ray *ray, t_trace *trace, map_cub sign, t_img img)
 
 int	ft_ray(t_ray *ray)
 {
-	t_img	img;
-	map_cub	sign;
-	t_trace	*trace;
+	t_img		img;
+	t_map_cub	sign;
+	t_trace		*trace;
 
 	sign = ray->sign;
 	trace = &ray->trace;
@@ -97,15 +97,12 @@ int	ft_ray(t_ray *ray)
 
 int	loop_main(t_ray *ray)
 {
-	map_cub	*sign;
+	t_map_cub	*sign;
 
 	sign = &ray->sign;
-	ray->mlx = mlx_init();
+	check_size(ray, sign);
 	ray->win = mlx_new_window(ray->mlx, sign->width, sign->height, "CUB3D");
-	parse_color_f(ray, sign->F, sign);
-	parse_color_c(ray, sign->C, sign);
-	init_textures(ray);
-	init_sp(ray);
+	init_graph(ray);
 	mlx_hook(ray->win, 2, 0, &key_pressed, ray);
 	mlx_hook(ray->win, 17, 0, finish, ray);
 	mlx_hook(ray->win, 3, 0, &key_unpressed, ray);

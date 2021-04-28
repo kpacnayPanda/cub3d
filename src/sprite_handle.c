@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 13:18:54 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/28 01:11:13 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:12:22 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	get_sp_pos(t_ray *ray, int count, int i, int j)
 
 void	init_sprite(t_ray *ray, int count)
 {
-	int		i;
-	int		j;
-	map_cub	*sign;
+	int			i;
+	int			j;
+	t_map_cub	*sign;
 
 	i = 0;
 	sign = &ray->sign;

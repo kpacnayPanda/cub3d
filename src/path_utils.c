@@ -6,58 +6,67 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 15:56:45 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/27 23:50:59 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 16:11:48 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-void	find_path(char *str, map_cub *sign, char id)
+void	double_check(char id, t_map_cub *sign)
 {
-	int	i;
-	int	start;
-	int	end;
-
-	i = 0;
-	while (str[i] != '.')
-		i++;
-	start = i;
-	end = ft_strlen(str) - 1;
-	if (id == 'N')
-		sign->NO = copy(str, start, end);
-	if (id == 'W')
-		sign->WE = copy(str, start, end);
-	if (id == 'E')
-		sign->EA = copy(str, start, end);
-	if (id == 'S')
-		sign->SO = copy(str, start, end);
-	if (id == 'T')
-		sign->S = copy(str, start, end);
+	if (id == 'N' && sign->NO != NULL)
+		error_handler(2);
+	if (id == 'W' && sign->WE != NULL)
+		error_handler(2);
+	if (id == 'S' && sign->SO != NULL)
+		error_handler(2);
+	if (id == 'E' && sign->EA != NULL)
+		error_handler(2);
+	if (id == 'T' && sign->S != NULL)
+		error_handler(2);
 }
 
-void	take_color(char *str, map_cub *sign, char id)
+void	find_path(char *str, t_map_cub *sign, char id)
 {
-	int	i;
-	int	flag;
-	int	start;
-	int	end;
+	int		i;
+	char	*path;
+
+	i = 0;
+	while (*str != ' ')
+		str++;
+	double_check(id, sign);
+	path = ft_strtrim(str, " ");
+	if (id == 'N')
+		sign->NO = path;
+	if (id == 'W')
+		sign->WE = path;
+	if (id == 'E')
+		sign->EA = path;
+	if (id == 'S')
+		sign->SO = path;
+	if (id == 'T')
+		sign->S = path;
+}
+
+void	take_color(char *str, t_map_cub *sign, char id)
+{
+	int		i;
+	int		flag;
+	char	*color;
 
 	i = 0;
 	flag = 1;
-	while (str[i] && flag == 1)
-	{
-		if (ft_isdigit(str[i]))
-		{
-			flag = 2;
-			start = i;
-		}
-		i++;
-	}
-	end = ft_strlen(str) - 1;
+	if (id == 'F' && sign->F != NULL)
+		error_handler(2);
+	if (id == 'C' && sign->C != NULL)
+		error_handler(2);
+	while (*str != ' ')
+		str++;
+	color = ft_strtrim(str, " ");
 	if (id == 'F')
-		sign->F = copy(str, start, end);
+		sign->F = color;
 	if (id == 'C')
-		sign->C = copy(str, start, end);
+		sign->C = color;
 }
 
 int	check2(char c)

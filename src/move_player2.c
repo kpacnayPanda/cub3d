@@ -6,13 +6,13 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 17:41:39 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/27 20:17:14 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 16:10:53 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-int	check_for_wall(double pos, map_cub *sign, char ax)
+int	check_for_wall(double pos, t_map_cub *sign, char ax)
 {
 	if (ax == 'x')
 	{

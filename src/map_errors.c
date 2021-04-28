@@ -6,13 +6,13 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 14:14:23 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/27 22:07:24 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 16:58:55 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-int	check_util(map_cub *sign, int i, int j)
+int	check_util(t_map_cub *sign, int i, int j)
 {
 	if (i == 0 || j == sign->mapwidth - 1 || i == sign->mapheight - 1 || \
 		sign->mapwidth == 0)
@@ -24,31 +24,36 @@ int	check_util(map_cub *sign, int i, int j)
 	return (1);
 }
 
-int	map_error_check(map_cub *sign)
+int	map_error_check(t_map_cub *sign, int j)
 {
 	int	i;
-	int	j;
 
-	i = 0;
-	j = 0;
-	while (i < sign->mapheight)
+	i = -1;
+	while (++i < sign->mapheight)
 	{
+		j = 0;
 		while (j < sign->mapwidth && sign->map_arr[i][j] != '\0')
 		{
-			if (sign->map_arr[i][j] == '0' || sign->map_arr[i][j] == '2')
+			if (sign->map_arr[i][j] == '0' || sign->map_arr[i][j] == '2' \
+			|| sign->map_arr[i][j] == 'N' || sign->map_arr[i][j] == 'W' \
+			|| sign->map_arr[i][j] == 'E' || sign->map_arr[i][j] == 'S' \
+			|| sign->map_arr[i][j] == '1' || sign->map_arr[i][j] == ' ')
 			{
-				if (!check_util(sign, i, j))
-					return (0);
+				if (sign->map_arr[i][j] != '1' && sign->map_arr[i][j] != ' ')
+				{
+					if (!check_util(sign, i, j))
+						return (0);
+				}
 			}
+			else
+				error_handler(3);
 			j++;
 		}
-		i++;
-		j = 0;
 	}
 	return (1);
 }
 
-void	find_pos(map_cub *sign, int flag)
+void	find_pos(t_map_cub *sign, int flag)
 {
 	int	i;
 	int	j;

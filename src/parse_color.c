@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 15:24:25 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/27 20:15:33 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 16:11:49 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	valid_color(int r, int g, int b)
 	return (1);
 }
 
-void	parse_color_f(t_ray *ray, char *line, map_cub *sign)
+void	parse_color_f(t_ray *ray, char *line, t_map_cub *sign)
 {
 	int	flag;
 
@@ -48,7 +48,7 @@ void	parse_color_f(t_ray *ray, char *line, map_cub *sign)
 	free(sign->F);
 }
 
-void	parse_color_c(t_ray *ray, char *line, map_cub *sign)
+void	parse_color_c(t_ray *ray, char *line, t_map_cub *sign)
 {
 	int	flag;
 

@@ -6,13 +6,13 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 17:08:53 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/27 23:51:45 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 16:51:49 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-void	take_width_r(char *str, int flag, map_cub *sign, int i)
+void	take_width_r(char *str, int flag, t_map_cub *sign, int i)
 {
 	int		widthlen;
 	char	*tmp;
@@ -41,21 +41,21 @@ void	take_width_r(char *str, int flag, map_cub *sign, int i)
 	free(tmp);
 }
 
-void	take_r_specs(char *str, map_cub *sign)
+void	take_r_specs(char *str, t_map_cub *sign, int flag)
 {
 	int	i;
-	int	flag;
 
-	i = 0;
-	flag = 0;
-	while (str[i] != '\0')
+	i = -1;
+	if (sign->width != 0 || sign->height != 0)
+		error_handler(2);
+	while (str[++i] != '\0')
 	{
-		if (ft_isdigit(str[i]) && (flag == 0))
+		if ((ft_isdigit(str[i]) || (str[i] == '-')) && (flag == 0))
 		{
 			take_width_r(&str[i], flag, sign, 0);
 			flag = 1;
 		}
-		if (ft_isdigit(str[i]) && (flag == 2))
+		if ((ft_isdigit(str[i]) || (str[i] == '-')) && (flag == 2))
 		{
 			take_width_r(&str[i], flag, sign, 0);
 			flag = 3;
@@ -64,12 +64,13 @@ void	take_r_specs(char *str, map_cub *sign)
 		{
 			if (flag == 1)
 				flag = 2;
+			if (flag == 3)
+				error_handler(2);
 		}
-		i++;
 	}
 }
 
-void	find_sprites(map_cub *sign)
+void	find_sprites(t_map_cub *sign)
 {
 	int	i;
 	int	j;
@@ -92,7 +93,7 @@ void	find_sprites(map_cub *sign)
 	sign->spp_count = count;
 }
 
-int	find_borders(char *str, map_cub *sign)
+int	find_borders(char *str, t_map_cub *sign)
 {
 	int	i;
 	int	len;
@@ -117,7 +118,7 @@ int	find_borders(char *str, map_cub *sign)
 	return (1);
 }
 
-void	init_ray1(t_trace *trace, t_ray *ray, map_cub sign)
+void	init_ray1(t_trace *trace, t_ray *ray, t_map_cub sign)
 {
 	if (ray->rayDirX < 0)
 	{

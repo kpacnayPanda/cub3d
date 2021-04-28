@@ -6,13 +6,13 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 16:11:08 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/27 20:59:55 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 16:07:08 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-void	ft_set_args(map_cub *sign)
+void	ft_set_args(t_map_cub *sign)
 {
 	sign->NO = NULL;
 	sign->SO = NULL;
@@ -56,8 +56,8 @@ void	set_s_n(t_ray *ray)
 	{
 		ray->dirX = 0;
 		ray->dirY = -1;
-		ray->planeX = 0;
-		ray->planeY = -1;
+		ray->planeX = 1;
+		ray->planeY = 0;
 	}
 }
 
@@ -81,8 +81,9 @@ void	set_dirs(t_ray *ray)
 		set_s_n(ray);
 }
 
-void	init_st(t_ray *ray, map_cub *sign, t_key *key, t_trace *trace)
+void	init_st(t_ray *ray, t_map_cub *sign, t_key *key, t_trace *trace)
 {
+	ray->mlx = mlx_init();
 	ray->win = NULL;
 	ray->oldtime = 0;
 	ray->time = 0;

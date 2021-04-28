@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 23:07:21 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/28 02:21:29 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:10:50 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,58 +14,56 @@
 
 int	first_frame(t_ray *ray, t_img img)
 {
-	map_cub *sign;
-	t_trace	*trace;
+	t_map_cub	*sign;
+	t_trace		*trace;
 
 	sign = &ray->sign;
 	trace = &ray->trace;
-	parse_color_f(ray, ray->sign.F, sign);
-	parse_color_c(ray, ray->sign.C, sign);
-	init_textures(ray);
-	init_sp(ray);
+	init_graph(ray);
 	ray_start(ray, trace, *sign, img);
 	mlx_put_image_to_window(ray->mlx, ray->win, img.img, 0, 0);
 	return (0);
 }
 
-static char		*make_bitmap(t_ray ray, int fd)
+char	*make_bm(t_ray ray, int fd)
 {
-	char *bitmap;
+	char	*bm;
 
-	if (!(bitmap = (char*)ft_calloc(sizeof(char), 54)))
+	bm = (char *)ft_calloc(sizeof(char), 54);
+	if (!(bm))
 	{
 		close(fd);
 		error_handler(5);
 	}
-	bitmap[0] = 'B';
-	bitmap[1] = 'M';
-	*((int*)(bitmap + 2)) = ray.sign.width * ray.sign.height * 4 + 54;
-	*((int*)(bitmap + 10)) = 54;
-	*((int*)(bitmap + 14)) = 40;
-	*((int*)(bitmap + 18)) = ray.sign.width;
-	*((int*)(bitmap + 22)) = -ray.sign.height;
-	*(bitmap + 26) = 1;
-	*(bitmap + 28) = 32;
-	return (bitmap);
+	bm[0] = 'B';
+	bm[1] = 'M';
+	*((int *)(bm + 2)) = ray.sign.width * ray.sign.height * 4 + 54;
+	*((int *)(bm + 10)) = 54;
+	*((int *)(bm + 14)) = 40;
+	*((int *)(bm + 18)) = ray.sign.width;
+	*((int *)(bm + 22)) = -ray.sign.height;
+	*(bm + 26) = 1;
+	*(bm + 28) = 32;
+	return (bm);
 }
 
-static void		img_to_bmp(t_ray ray, int fd, t_img img)
+void	img_to_bmp(t_ray ray, int fd, t_img img)
 {
-	int x;
-	int y;
+	int	i;
+	int	j;
 
-	y = 0;
-	while (y < ray.sign.height)
+	j = 0;
+	while (j < ray.sign.height)
 	{
-		x = 0;
-		while (x < ray.sign.width)
+		i = 0;
+		while (i < ray.sign.width)
 		{
-			ray.trace.color= *(int*)(img.addr + (y * img.l_len + x *
+			ray.trace.color = *(int *)(img.addr + (j * img.l_len + i * \
 							(img.bpr / 8)));
 			write(fd, &ray.trace.color, 4);
-			x++;
+			i++;
 		}
-		y++;
+		j++;
 	}
 }
 
@@ -73,23 +71,26 @@ void	bmp(char *file)
 {
 	int		fd;
 	t_ray	ray;
-	char	*bitmap;
+	char	*bm;
 	t_img	img;
+	t_spvar	svar;
 
 	cub_start(file, &ray);
-	ray.mlx = mlx_init();
+	ft_set_spvars(&ray, &svar, &img);
+	check_size(&ray, &ray.sign);
 	ray.win = mlx_new_window(ray.mlx, ray.sign.width, ray.sign.height, "CUB3D");
 	img.img = mlx_new_image(ray.mlx, ray.sign.width, ray.sign.height);
 	img.addr = mlx_get_data_addr(img.img, &img.bpr, &img.l_len, &img.end);
 	first_frame(&ray, img);
-	if ((fd = open("maze.bmp", O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU)) == -1)
+	fd = open("maze.bmp", O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
+	if (fd == -1)
 	{
 		close(fd);
 		error_handler(6);
 	}
-	bitmap = (char*)make_bitmap(ray, fd);
-	write(fd, bitmap,  54);
-	free(bitmap);
+	bm = (char *)make_bm(ray, fd);
+	write(fd, bm, 54);
+	free(bm);
 	img_to_bmp(ray, fd, img);
 	close(fd);
 }

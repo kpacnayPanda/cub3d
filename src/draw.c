@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 19:36:41 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/27 18:08:13 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 16:11:55 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_line2(t_ray *ray, t_img *img, t_img *wood, t_trace *trace)
 	my_mlx_pixel_put(img, ray->i, ray->y, trace->color);
 }
 
-void	draw_walls(t_trace *trace, map_cub sign, t_ray *ray, t_img *img)
+void	draw_walls(t_trace *trace, t_map_cub sign, t_ray *ray, t_img *img)
 {
 	ray->y = trace->drawStart;
 	trace->step = 1.0 * 64 / trace->lineh;
@@ -32,22 +32,22 @@ void	draw_walls(t_trace *trace, map_cub sign, t_ray *ray, t_img *img)
 		if (trace->side == 0)
 		{
 			if (trace->stepX < 0)
-				ft_line2(ray, img, &ray->tex.ea, trace);
-			else
 				ft_line2(ray, img, &ray->tex.we, trace);
+			else
+				ft_line2(ray, img, &ray->tex.ea, trace);
 		}
 		else
 		{
 			if (trace->stepY < 0)
-				ft_line2(ray, img, &ray->tex.so, trace);
-			else
 				ft_line2(ray, img, &ray->tex.no, trace);
+			else
+				ft_line2(ray, img, &ray->tex.so, trace);
 		}
 		ray->y++;
 	}
 }
 
-void	draw_f_c(t_trace *trace, t_img img, map_cub sign, t_ray *ray)
+void	draw_f_c(t_trace *trace, t_img img, t_map_cub sign, t_ray *ray)
 {
 	int	zz;
 

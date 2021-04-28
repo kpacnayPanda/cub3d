@@ -6,13 +6,13 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 17:53:25 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/27 22:45:57 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 16:11:27 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-void	init_ray0(t_trace *trace, t_ray *ray, map_cub sign)
+void	init_ray0(t_trace *trace, t_ray *ray, t_map_cub sign)
 {
 	ray->CameraX = 2 * ray->i / (double)sign.width - 1;
 	ray->rayDirX = ray->dirX + ray->planeX * ray->CameraX;
