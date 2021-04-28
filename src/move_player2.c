@@ -6,13 +6,13 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 17:41:39 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/26 13:46:31 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/27 20:17:14 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-int		check_for_wall(double pos, map_cub *sign, char ax)
+int	check_for_wall(double pos, map_cub *sign, char ax)
 {
 	if (ax == 'x')
 	{
@@ -31,31 +31,32 @@ int		check_for_wall(double pos, map_cub *sign, char ax)
 
 void	move_left(t_ray *ray)
 {
-	double olddir;
-	double oldplanex;
+	double	olddir;
+	double	oldplanex;
 
 	olddir = ray->dirX;
 	oldplanex = ray->planeX;
-	ray->dirX = ray->dirX * cos(-ray->rotspeed) - ray->dirY * sin(-ray->rotspeed);
-	ray->dirY = olddir * sin(-ray->rotspeed) + ray->dirY * cos(-ray->rotspeed);
-	ray->planeX = ray->planeX * cos(-ray->rotspeed) - ray->planeY
+	ray->dirX = ray->dirX * cos(-ray->rotspeed) - ray->dirY \
 							* sin(-ray->rotspeed);
-	ray->planeY = oldplanex * sin(-ray->rotspeed) + ray->planeY
+	ray->dirY = olddir * sin(-ray->rotspeed) + ray->dirY * cos(-ray->rotspeed);
+	ray->planeX = ray->planeX * cos(-ray->rotspeed) - ray->planeY \
+							* sin(-ray->rotspeed);
+	ray->planeY = oldplanex * sin(-ray->rotspeed) + ray->planeY \
 							* cos(-ray->rotspeed);
 }
 
 void	move_right(t_ray *ray)
 {
-	double olddir;
-	double oldplanex;
+	double	olddir;
+	double	oldplanex;
 
 	olddir = ray->dirX;
 	oldplanex = ray->planeX;
-	ray->dirX = ray->dirX * cos(ray->rotspeed) - ray->dirY
+	ray->dirX = ray->dirX * cos(ray->rotspeed) - ray->dirY \
 							* sin(ray->rotspeed);
 	ray->dirY = olddir * sin(ray->rotspeed) + ray->dirY * cos(ray->rotspeed);
-	ray->planeX = ray->planeX * cos(ray->rotspeed) - ray->planeY
+	ray->planeX = ray->planeX * cos(ray->rotspeed) - ray->planeY \
 							* sin(ray->rotspeed);
-	ray->planeY = oldplanex * sin(ray->rotspeed) + ray->planeY
+	ray->planeY = oldplanex * sin(ray->rotspeed) + ray->planeY \
 							* cos(ray->rotspeed);
 }

@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 17:03:11 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/26 14:06:40 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/27 18:53:34 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,19 @@
 
 void	init_sp(t_ray *ray)
 {
-	t_img sp;
-	t_tex texes;
-
-	sp.img = mlx_xpm_file_to_image(ray->mlx, "pics/barrel.xpm", &sp.w, &sp.h);
-	printf("lol\n");
-	sp.addr = mlx_get_data_addr(sp.img, &sp.bpr, &sp.l_len, &sp.end);
-	printf("%s\n", sp.addr);
-	texes.sp = sp;
-	ray->tex = texes;
+	ray->tex.sp.img = mlx_xpm_file_to_image(ray->mlx, "pics/barrel.xpm", \
+					&ray->tex.sp.w, &ray->tex.sp.h);
+	ray->tex.sp.addr = mlx_get_data_addr(ray->tex.sp.img, &ray->tex.sp.bpr, \
+					&ray->tex.sp.l_len, &ray->tex.sp.end);
 }
 
 void	init_textures(t_ray *ray)
 {
-	t_img t1;
-	t_img t2;
-	t_img t3;
-	t_img t4;
-	t_img sp;
-	t_tex texes;
+	t_img	t1;
+	t_img	t2;
+	t_img	t3;
+	t_img	t4;
+	t_tex	texes;
 
 	t1.img = mlx_xpm_file_to_image(ray->mlx, "pics/brick.xpm", &t1.w, &t1.h);
 	t1.addr = mlx_get_data_addr(t1.img, &t1.bpr, &t1.l_len, &t1.end);
@@ -42,13 +36,6 @@ void	init_textures(t_ray *ray)
 	t3.addr = mlx_get_data_addr(t3.img, &t3.bpr, &t3.l_len, &t3.end);
 	t4.img = mlx_xpm_file_to_image(ray->mlx, "pics/metal.xpm", &t4.w, &t4.h);
 	t4.addr = mlx_get_data_addr(t4.img, &t4.bpr, &t4.l_len, &t4.end);
-	printf("n0 %s\n", t4.addr);
-	// init_sp(ray);
-	sp.img = mlx_xpm_file_to_image(ray->mlx, "pics/barrel.xpm", &sp.w, &sp.h);
-	printf("lol\n");
-	sp.addr = mlx_get_data_addr(sp.img, &sp.bpr, &sp.l_len, &sp.end);
-	printf("%s\n", sp.addr);
-	texes.sp = sp;
 	texes.no = t1;
 	texes.so = t2;
 	texes.we = t3;

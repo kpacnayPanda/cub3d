@@ -6,13 +6,13 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 17:53:25 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/26 13:32:20 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/27 22:45:57 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-void			init_ray0(t_trace *trace, t_ray *ray, map_cub sign)
+void	init_ray0(t_trace *trace, t_ray *ray, map_cub sign)
 {
 	ray->CameraX = 2 * ray->i / (double)sign.width - 1;
 	ray->rayDirX = ray->dirX + ray->planeX * ray->CameraX;
@@ -23,6 +23,7 @@ void			init_ray0(t_trace *trace, t_ray *ray, map_cub sign)
 	trace->deltaDistY = fabs(1 / ray->rayDirY);
 	trace->hit = 0;
 	trace->side = -1;
+	init_ray1(trace, ray, sign);
 }
 
 unsigned int	get_color(t_img *data, int x, int y)
@@ -30,18 +31,18 @@ unsigned int	get_color(t_img *data, int x, int y)
 	char	*dst;
 
 	dst = data->addr + (y * data->l_len + x * (data->bpr / 8));
-	return (*(unsigned int*)dst);
+	return (*(unsigned int *)dst);
 }
 
-void			my_mlx_pixel_put(t_img *img, int x, int y, unsigned int color)
+void	my_mlx_pixel_put(t_img *img, int x, int y, unsigned int color)
 {
 	char	*dst;
 
 	dst = img->addr + (y * img->l_len + x * (img->bpr / 8));
-	*(unsigned int*)dst = color;
+	*(unsigned int *)dst = color;
 }
 
-int				key_pressed(int keycode, t_ray *ray)
+int	key_pressed(int keycode, t_ray *ray)
 {
 	if (keycode == W)
 		ray->key.w = 1;
@@ -60,7 +61,7 @@ int				key_pressed(int keycode, t_ray *ray)
 	return (0);
 }
 
-int				key_unpressed(int keycode, t_ray *ray)
+int	key_unpressed(int keycode, t_ray *ray)
 {
 	if (keycode == W)
 		ray->key.w = 0;

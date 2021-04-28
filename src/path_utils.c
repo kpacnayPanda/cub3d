@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 15:56:45 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/10 18:57:52 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/27 23:50:59 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,11 @@ void	take_color(char *str, map_cub *sign, char id)
 		sign->F = copy(str, start, end);
 	if (id == 'C')
 		sign->C = copy(str, start, end);
+}
+
+int	check2(char c)
+{
+	if (c == 'N' || c == 'W' || c == 'E' || c == 'S')
+		return (1);
+	return (0);
 }

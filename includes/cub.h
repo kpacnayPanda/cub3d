@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:36:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/26 13:57:50 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 01:08:46 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,9 @@ typedef struct	s_stuct
 	unsigned int	f;
 	unsigned int	c;
 	int				spp_count;
+	int				r;
+	int				g;
+	int				b;
 
 	char			**map_arr;
 }				map_cub;
@@ -129,6 +132,27 @@ typedef struct	s_trace {
 	double			texPos;
 }				t_trace;
 
+typedef struct	s_spvar
+{
+	double	invdet;
+	double	transX;
+	double	transY;
+	int		spritescreen;
+	int		spheight;
+	int		drawStartY;
+	int		drawEndy;
+	int		spwidth;
+	int		drawstartX;
+	int		drawEndx;
+	int		stripe;
+	int		texX;
+	int		y;
+	int		d;
+	int		texY;
+	int		color;
+}				t_spvar;
+
+
 typedef struct	s_ray {
 	void	*mlx;
 	void	*win;
@@ -144,6 +168,7 @@ typedef struct	s_ray {
 	double	rotspeed;
 	double	movespeed;
 	int		i;
+	int		y;
 	double	transx;
 	double	transy;
 	int		sp_screen;
@@ -158,10 +183,12 @@ typedef struct	s_ray {
 	t_tex		tex;
 	t_trace		trace;
 	t_sprite	**sprite;
+	t_spvar		spvar;
+	t_img		img;
 }				t_ray;
 
 
-int		cub_parser(int fd, char **line);
+int		cub_parser(int fd, char **line, int byte_read, int flag);
 void	find_configs(char *line, map_cub *sign);
 void	take_r_specs(char *str, map_cub *sign);
 char	*f_strjoin(char *str, char *str2);
@@ -172,12 +199,11 @@ int		check(char *str);
 void	check_map(char *str, map_cub *sign);
 int		map_error_check(map_cub *sign);
 int		trace(map_cub *sign);
-void	find_pos(map_cub *sign);
+void	find_pos(map_cub *sign, int flag);
 int		loop_main(t_ray *ray);
 int		ft_len(int n);
 void	parse_color_f(t_ray *ray, char *line, map_cub *sign);
 void	parse_color_c(t_ray *ray, char *line, map_cub *sign);
-int		cub_parser(int fd, char **line);
 void	ft_set_args(map_cub *sign);
 void	ft_set_keys(t_key *key);
 void	ft_set_trace(t_trace *trace);
@@ -202,8 +228,17 @@ void	check_for_valid(map_cub *sign);
 int		check2(char c);
 int		check_for_wall(double pos, map_cub *sign, char ax);
 void	find_sprites(map_cub *sign);
-void	init_sprite(t_ray *ray);
-void	sprite_rend2(t_ray *ray, int count, double *dist_buff);
-void	sprite_rendering(t_ray *ray, double *dis_buff, t_img *img, t_img *wood);
-
+void	init_sprite(t_ray *ray, int count);
+void	sprite_rendering(t_ray *ray, double *dis_buff, t_img *img);
+void	ft_set_spvars(t_ray *ray, t_spvar *svar, t_img *img);
+void	sprite_sorting(int *order, double *dist, int count, int check);
+void	init_sp(t_ray *ray);
+int		find_borders(char *str, map_cub *sign);
+void	init_ray1(t_trace *trace, t_ray *ray, map_cub sign);
+void	bmp(char *file);
+int		cub_start(char *str, t_ray *ray);
+int		ft_ray(t_ray *ray);
+void	init_ray1(t_trace *trace, t_ray *ray, map_cub sign);
+void	ray_shoot(t_trace *trace, map_cub sign, t_ray *ray);
+void	ray_start(t_ray *ray, t_trace *trace, map_cub sign, t_img img);
 #endif

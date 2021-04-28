@@ -6,15 +6,15 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 14:14:23 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/26 13:17:05 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/27 22:07:24 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-int		check_util(map_cub *sign, int i, int j)
+int	check_util(map_cub *sign, int i, int j)
 {
-	if (i == 0 || j == sign->mapwidth - 1 || i == sign->mapheight - 1 ||
+	if (i == 0 || j == sign->mapwidth - 1 || i == sign->mapheight - 1 || \
 		sign->mapwidth == 0)
 		return (0);
 	if (sign->map_arr[i + 1][j] == ' ' || sign->map_arr[i][j + 1] == ' ')
@@ -24,10 +24,10 @@ int		check_util(map_cub *sign, int i, int j)
 	return (1);
 }
 
-int		map_error_check(map_cub *sign)
+int	map_error_check(map_cub *sign)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
@@ -48,20 +48,18 @@ int		map_error_check(map_cub *sign)
 	return (1);
 }
 
-void	find_pos(map_cub *sign)
+void	find_pos(map_cub *sign, int flag)
 {
-	int i;
-	int j;
-	int flag;
+	int	i;
+	int	j;
 
 	i = 0;
-	j = 0;
-	flag = 0;
 	while (i < sign->mapheight)
 	{
+		j = 0;
 		while (j < sign->mapwidth)
 		{
-			if (sign->map_arr[i][j] == 'N' || sign->map_arr[i][j] == 'S' ||
+			if (sign->map_arr[i][j] == 'N' || sign->map_arr[i][j] == 'S' || \
 			sign->map_arr[i][j] == 'W' || sign->map_arr[i][j] == 'E')
 			{
 				if (flag == 1)
@@ -74,7 +72,6 @@ void	find_pos(map_cub *sign)
 			j++;
 		}
 		i++;
-		j = 0;
 	}
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 16:56:07 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/26 13:54:09 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/27 20:19:18 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	key_a(t_ray *ray)
 {
-	map_cub *sign;
-	double posx;
-	double posy;
+	map_cub	*sign;
+	double	posx;
+	double	posy;
 
 	sign = &(ray->sign);
 	posx = sign->posX + ray->dirY * ray->movespeed;
@@ -29,9 +29,9 @@ void	key_a(t_ray *ray)
 
 void	key_w(t_ray *ray)
 {
-	map_cub *sign;
-	double posx;
-	double posy;
+	map_cub	*sign;
+	double	posx;
+	double	posy;
 
 	sign = &(ray->sign);
 	posx = sign->posX + ray->dirX * ray->movespeed;
@@ -44,24 +44,24 @@ void	key_w(t_ray *ray)
 
 void	key_s(t_ray *ray)
 {
-	map_cub *sign;
-	double posx;
-	double posy;
+	map_cub	*sign;
+	double	posx;
+	double	posy;
 
 	sign = &(ray->sign);
 	posx = sign->posX - ray->dirX * ray->movespeed;
 	posy = sign->posY - ray->dirY * ray->movespeed;
 	if (check_for_wall(posx, sign, 'x'))
 		sign->posX -= ray->dirX * ray->movespeed;
-	if (check_for_wall(posy, sign,'y'))
+	if (check_for_wall(posy, sign, 'y'))
 		sign->posY -= ray->dirY * ray->movespeed;
 }
 
 void	key_d(t_ray *ray)
 {
-	map_cub *sign;
-	double posx;
-	double posy;
+	map_cub	*sign;
+	double	posx;
+	double	posy;
 
 	sign = &(ray->sign);
 	posx = sign->posX - ray->dirY * ray->movespeed;

@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 16:10:06 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/06 14:30:26 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/27 18:41:52 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ char	*before_newline(char *str)
 		return (0);
 	while (str[i] && str[i] != '\n')
 		i++;
-	if (!(newstr = malloc(sizeof(char) * (i + 1))))
+	newstr = malloc(sizeof(char) * (i + 1));
+	if (!newstr)
 		return (0);
 	i = 0;
 	while (str[i] && str[i] != '\n')
@@ -51,7 +52,8 @@ char	*after_newline(char *remainder)
 		free(remainder);
 		return (0);
 	}
-	if (!(newstr = malloc(sizeof(char) * ((ft_strlen(remainder) - i) + 1))))
+	newstr = malloc(sizeof(char) * ((ft_strlen(remainder) - i) + 1));
+	if (!newstr)
 		return (0);
 	i++;
 	while (remainder[i])
@@ -61,26 +63,26 @@ char	*after_newline(char *remainder)
 	return (newstr);
 }
 
-int		cub_parser(int fd, char **line)
+int	cub_parser(int fd, char **line, int byte_read, int flag)
 {
 	char		*buf;
-	int			byte_read;
 	static char	*remainder;
 
-	byte_read = 1;
-	if (fd < 0)
+	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buf)
 		return (-1);
-	if (!(buf = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
-		return (-1);
-	while (!check(remainder) && byte_read != 0)
+	flag = check(remainder);
+	while (!flag && byte_read != 0)
 	{
-		if ((byte_read = read(fd, buf, BUFFER_SIZE)) == -1)
+		byte_read = read(fd, buf, BUFFER_SIZE);
+		if (byte_read == -1)
 		{
 			free(buf);
 			return (-1);
 		}
 		buf[byte_read] = '\0';
 		remainder = f_strjoin(remainder, buf);
+		flag = check(remainder);
 	}
 	free(buf);
 	*line = before_newline(remainder);

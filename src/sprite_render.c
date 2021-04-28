@@ -6,79 +6,109 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 23:52:55 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/25 13:25:34 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/27 19:05:05 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-void	draw_sprite_calculate(t_ray *ray)
+void	sp_last(t_ray *ray, double *dis_buff, t_img *img, t_spvar *var)
 {
-	ray->sp_height = abs((int)(ray->sign.height / ray->transy));
-	ray->sp_width = abs((int)(ray->sign.height / ray->transy));
-	ray->drawsy = (ray->sign.height - ray->sp_height) / 2;
-	if (ray->drawsy < 0)
-		ray->drawsy = 0;
-	ray->drawey = (ray->sign.height + ray->sp_height) / 2;
-	if (ray->drawey >= ray->sign.height)
-		ray->drawey = ray->sign.height -1;
-	ray->drawsx = ray->sp_screen - ray->sp_width / 2;
-	if (ray->drawsx < 0)
-		ray->drawsx = 0;
-	ray->drawex = ray->sp_screen + ray->sp_width / 2;
-	if (ray->drawex >= ray->sign.width)
-		ray->drawex = ray->sign.width - 1;
-}
+	t_img	*wood;
+	int		tex;
 
-void	sp_pixel_put(t_ray *ray, int i, int j)
-{
-	int color;
-
-	ray->trace.tex_y = (int)((i - (ray->sign.height - ray->sp_height) / 2) *
-						ray->tex.sp.h / ray->sp_height);
-						printf("kek\n");
-	color = ((int*)ray->tex.sp.addr)[64 * ray->trace.tex_y + ray->trace.texX];
-	if ((color & 0x00FFFFFF) != 0)
-		my_mlx_pixel_put(&ray->tex.sp, i, j, color);
-}
-
-void	sprite_draw(t_ray *ray, double *dist_buff)
-{
-	int i;
-	int j;
-
-	i = ray->drawsx;
-	while (i < ray->drawex)
+	wood = &ray->tex.sp;
+	while (var->stripe < var->drawEndx)
 	{
-		ray->trace.texX = (int)((i - (ray->sp_screen - ray->sp_width / 2)) *
-								ray->tex.sp.w / ray->sp_width);
-		if (ray->transy > 0 && ray->transy < dist_buff[i] && i > 0 && i
-								< ray->sign.width)
+		tex = (int)(256 * (var->stripe - (-var->spwidth / 2 + \
+				var->spritescreen)) * 64 / var->spwidth) / 256;
+		if (var->transY > 0 && var->stripe > 0 && var->stripe < ray->sign.width
+			&& var->transY < dis_buff[var->stripe])
 		{
-			j = ray->drawsy;
-			while (j < ray->drawey)
+			var->y = var->drawStartY;
+			while (var->y < var->drawEndy)
 			{
-				sp_pixel_put(ray, i, j);
-				j++;
+				var->d = (var->y) * 256 - ray->sign.height * 128 + \
+						var->spheight * 128;
+				var->texY = ((var->d * 64) / var->spheight) / 256;
+				var->color = ((int *)wood->addr)[(int)(64 * var->texY + tex)];
+				if ((var->color & 0x00FFFFFF) != 0)
+					my_mlx_pixel_put(img, var->stripe, var->y, var->color);
+				var->y++;
 			}
 		}
+		var->stripe++;
+	}
+}
+
+void	sp_matrix(t_ray *ray, double *dis_buff, t_img *img, t_spvar *var)
+{
+	var->drawStartY = -var->spheight / 2 + ray->sign.height / 2;
+	if (var->drawStartY < 0)
+		var->drawStartY = 0;
+	var->drawEndy = var->spheight / 2 + ray->sign.height / 2;
+	if (var->drawEndy >= ray->sign.height)
+		var->drawEndy = ray->sign.height - 1;
+	var->spwidth = abs((int)(ray->sign.height / var->transY));
+	var->drawstartX = -var->spwidth / 2 + var->spritescreen;
+	if (var->drawstartX < 0)
+		var->drawstartX = 0;
+	var->drawEndx = var->spwidth / 2 + var->spritescreen;
+	if (var->drawEndx >= ray->sign.width)
+		var->drawEndx = ray->sign.width - 1;
+	var->stripe = var->drawstartX;
+	sp_last(ray, dis_buff, img, var);
+}
+
+void	sprite_rend2(int *order, t_ray *ray, double *dis_buff, t_img *img)
+{
+	int			i;
+	t_sprite	**sprite;
+	double		spritex;
+	double		spritey;
+	t_spvar		*var;
+
+	i = 0;
+	sprite = ray->sprite;
+	var = &ray->spvar;
+	while (i < ray->sign.spp_count)
+	{
+		spritex = sprite[order[i]]->x - ray->sign.posX;
+		spritey = sprite[order[i]]->y - ray->sign.posY;
+		var->invdet = 1.0 / (ray->planeX * ray->dirY - ray->dirX * ray->planeY);
+		var->transX = var->invdet * (ray->dirY * spritex - ray->dirX * spritey);
+		var->transY = var->invdet * (-ray->planeY * spritex \
+					+ ray->planeX * spritey);
+		var->spritescreen = (int)((ray->sign.width / 2) * \
+					(1 + var->transX / var->transY));
+		var->spheight = abs((int)(ray->sign.height / var->transY));
+		sp_matrix(ray, dis_buff, img, var);
 		i++;
 	}
 }
 
-void	sprite_rend2(t_ray *ray, int count, double *dist_buff)
+void	sprite_rendering(t_ray *ray, double *dis_buff, t_img *img)
 {
-	t_sprite **sprite;
-	double inv_det;
+	int			i;
+	t_sprite	**sprite;
+	t_trace		*trace;
+	int			*order;
+	double		*dist;
 
 	sprite = ray->sprite;
-	inv_det = 1.0 / (-ray->planeX * ray->dirY + ray->dirX * ray->planeX);
-	ray->transx = inv_det * (ray->dirY * sprite[count]->dist_x - ray->dirX *
-							sprite[count]->dist_y);
-	ray->transy = inv_det * (ray->planeY * sprite[count]->dist_x - ray->planeX *
-							sprite[count]->dist_y);
-	ray->sp_screen = (int)(ray->sign.width / 2) *
-						(1 + ray->transx / ray->transy);
-	draw_sprite_calculate(ray);
-	sprite_draw(ray, dist_buff);
+	trace = &ray->trace;
+	order = (int *)malloc(sizeof(char) * ray->sign.spp_count);
+	dist = (double *)malloc(sizeof(double) * ray->sign.spp_count);
+	i = 0;
+	while (i < ray->sign.spp_count)
+	{
+		order[i] = i;
+		dist[i] = pow((ray->sign.posX - sprite[i]->x), 2);
+		dist[i] += pow((ray->sign.posY - sprite[i]->y), 2);
+		i++;
+	}
+	sprite_sorting(order, dist, ray->sign.spp_count, 1);
+	sprite_rend2(order, ray, dis_buff, img);
+	free(order);
+	free(dist);
 }

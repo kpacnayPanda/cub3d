@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 17:08:53 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/24 23:27:25 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/27 23:51:45 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	take_width_r(char *str, int flag, map_cub *sign, int i)
 		widthlen++;
 		i++;
 	}
-	tmp = (char*)malloc((widthlen + 1) * sizeof(char));
+	tmp = (char *)malloc((widthlen + 1) * sizeof(char));
 	i = 0;
 	while (str[i] != ' ' && str[i] != '\0')
 	{
@@ -43,8 +43,8 @@ void	take_width_r(char *str, int flag, map_cub *sign, int i)
 
 void	take_r_specs(char *str, map_cub *sign)
 {
-	int i;
-	int flag;
+	int	i;
+	int	flag;
 
 	i = 0;
 	flag = 0;
@@ -69,18 +69,11 @@ void	take_r_specs(char *str, map_cub *sign)
 	}
 }
 
-int		check2(char c)
-{
-	if (c == 'N' || c == 'W' || c == 'E' || c == 'S')
-		return (1);
-	return (0);
-}
-
 void	find_sprites(map_cub *sign)
 {
-	int i;
-	int j;
-	int count;
+	int	i;
+	int	j;
+	int	count;
 
 	i = 0;
 	j = 0;
@@ -97,4 +90,54 @@ void	find_sprites(map_cub *sign)
 		i++;
 	}
 	sign->spp_count = count;
+}
+
+int	find_borders(char *str, map_cub *sign)
+{
+	int	i;
+	int	len;
+	int	flag;
+
+	i = 0;
+	len = ft_strlen(str);
+	flag = 1;
+	if (len == 0)
+		return (0);
+	while (flag)
+	{
+		if (str[i] == '1')
+		{
+			flag = 0;
+			sign->mapheight++;
+			if (len > sign->mapwidth)
+				sign->mapwidth = len;
+		}
+		i++;
+	}
+	return (1);
+}
+
+void	init_ray1(t_trace *trace, t_ray *ray, map_cub sign)
+{
+	if (ray->rayDirX < 0)
+	{
+		trace->stepX = -1;
+		trace->sideDistX = (sign.posX - trace->mapX) * trace->deltaDistX;
+	}
+	else
+	{
+		trace->stepX = 1;
+		trace->sideDistX = (trace->mapX + 1.0 - sign.posX) * trace->deltaDistX;
+	}
+	if (ray->rayDirY < 0)
+	{
+		trace->stepY = -1;
+		trace->sideDistY = (sign.posY - trace->mapY) * trace->deltaDistY;
+	}
+	else
+	{
+		trace->stepY = 1;
+		trace->sideDistY = (trace->mapY + 1.0 - sign.posY) * trace->deltaDistY;
+	}
+	ray_shoot(trace, sign, ray);
 }

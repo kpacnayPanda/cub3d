@@ -6,13 +6,13 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:44:09 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/26 13:20:31 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/28 01:13:15 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/cub.h"
 
-int		parse_file(map_cub *sign, char *str)
+int	parse_file(map_cub *sign, char *str)
 {
 	int		fd;
 	int		i;
@@ -21,13 +21,15 @@ int		parse_file(map_cub *sign, char *str)
 	i = 0;
 	line = NULL;
 	fd = open(str, O_RDONLY);
-	if (fd == -1)
+	if (fd < 0)
 		error_handler(4);
-	while ((i = cub_parser(fd, &line)))
+	i = cub_parser(fd, &line, 1, 0);
+	while (i)
 	{
 		printf("i = %d %s\n", i, line);
 		find_configs(line, sign);
 		free(line);
+		i = cub_parser(fd, &line, 1, 0);
 	}
 	printf("i = %d %s\n\n", i, line);
 	find_configs(line, sign);
@@ -38,20 +40,18 @@ int		parse_file(map_cub *sign, char *str)
 	return (1);
 }
 
-int		cub_start(char *str)
+int	cub_start(char *str, t_ray *ray)
 {
 	map_cub	sign;
 	t_key	key;
-	t_ray	ray;
 	t_trace	trace;
 	int ii = 0; //del
 
 	ft_set_args(&sign);
 	ft_set_keys(&key);
-	ft_set_trace(&trace);
 	if (parse_file(&sign, str))
 	{
-		find_pos(&sign);
+		find_pos(&sign, 0);
 		check_for_valid(&sign);
 		find_sprites(&sign);
 		printf("%d\n", sign.spp_count);
@@ -77,21 +77,30 @@ int		cub_start(char *str)
 		}
 		sign.map_arr[(int)sign.posY][(int)sign.posX] = '0';
 		printf("\n");
-		init_st(&ray, &sign, &key, &trace);
-		init_sprite(&ray);
-		loop_main(&ray);
-	}
-	return (0);
+		init_st(ray, &sign, &key, &trace);
+		init_sprite(ray, 0);
+	}	return (0);
 }
 
-int		main(int argc, char **argv)
+void	start(char *str)
+{
+	t_ray	ray;
+	t_spvar	svar;
+	t_img	img;
+
+	cub_start(str, &ray);
+	ft_set_spvars(&ray, &svar, &img);
+	loop_main(&ray);
+}
+
+int	main(int argc, char **argv)
 {
 	if (argc == 2 && ft_strnstr(argv[1], ".cub", ft_strlen(argv[1])))
-		cub_start(argv[1]);
+		start(argv[1]);
 	else
 	{
 		if (argc == 3 && (ft_strncmp(argv[2], "--save", 6) == 0))
-			printf("MAKE MAP PIC");
+			bmp(argv[1]);
 		else
 			error_handler(1);
 	}

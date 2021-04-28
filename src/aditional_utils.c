@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:39:58 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/10 18:59:08 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/27 17:49:02 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ char	*copy(char *str, int start, int end)
 	return (newstr);
 }
 
-int		check(char *str)
+int	check(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str)
@@ -71,9 +71,9 @@ int		check(char *str)
 	return (0);
 }
 
-int		ft_len(int n)
+int	ft_len(int n)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	if (n == 0)
@@ -91,7 +91,7 @@ int		ft_len(int n)
 	return (count);
 }
 
-int		finish(t_ray *ray)
+int	finish(t_ray *ray)
 {
 	mlx_destroy_window(ray->mlx, ray->win);
 	exit(0);

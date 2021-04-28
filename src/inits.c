@@ -6,7 +6,7 @@
 /*   By: mrosette <mrosette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 16:11:08 by mrosette          #+#    #+#             */
-/*   Updated: 2021/04/26 12:09:29 by mrosette         ###   ########.fr       */
+/*   Updated: 2021/04/27 20:59:55 by mrosette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ft_set_args(map_cub *sign)
 	sign->C = NULL;
 	sign->F = NULL;
 	sign->S = NULL;
+	sign->map_arr = NULL;
 	sign->height = 0;
 	sign->width = 0;
 	sign->mapwidth = 0;
@@ -42,22 +43,8 @@ void	ft_set_keys(t_key *key)
 	key->right = 0;
 }
 
-void	set_dirs(t_ray *ray)
+void	set_s_n(t_ray *ray)
 {
-	if (ray->sign.player == 'W')
-	{
-		ray->dirX = -1;
-		ray->dirY = 0;
-		ray->planeX = 0;
-		ray->planeY = -1;
-	}
-	if (ray->sign.player == 'E')
-	{
-		ray->dirX = 1;
-		ray->dirY = 0;
-		ray->planeX = 0;
-		ray->planeY = 1;
-	}
 	if (ray->sign.player == 'S')
 	{
 		ray->dirX = 0;
@@ -74,6 +61,26 @@ void	set_dirs(t_ray *ray)
 	}
 }
 
+void	set_dirs(t_ray *ray)
+{
+	if (ray->sign.player == 'W')
+	{
+		ray->dirX = -1;
+		ray->dirY = 0;
+		ray->planeX = 0;
+		ray->planeY = -1;
+	}
+	if (ray->sign.player == 'E')
+	{
+		ray->dirX = 1;
+		ray->dirY = 0;
+		ray->planeX = 0;
+		ray->planeY = 1;
+	}
+	if (ray->sign.player == 'N' || ray->sign.player == 'S')
+		set_s_n(ray);
+}
+
 void	init_st(t_ray *ray, map_cub *sign, t_key *key, t_trace *trace)
 {
 	ray->win = NULL;
@@ -87,10 +94,6 @@ void	init_st(t_ray *ray, map_cub *sign, t_key *key, t_trace *trace)
 	ray->sign = *sign;
 	ray->key = *key;
 	ray->trace = *trace;
+	ray->trace.perpWallDist = 0;
 	set_dirs(ray);
-}
-
-void	ft_set_trace(t_trace *trace)
-{
-	trace->perpWallDist = 0;
 }
